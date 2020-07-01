@@ -28,12 +28,12 @@ def create_layout(app):
 	return html.Div(
                 [
                     header(),
-                    html.Div(style={"height":"4rem"}),
+                    html.Div(style={"height":"0rem"}),
                     html.Div(
                         [
                             card_mainlist()
                         ],
-                        style={}
+                        style={"padding-top":"3rem","background-color":"#fff"}
                     )
                 ]
             )
@@ -91,24 +91,15 @@ def header():
 def card_mainlist():
     card = dbc.Card(
         [
-            dbc.CardHeader(
-                dbc.Tabs(
-                    [
-                        dbc.Tab(tab_ca_content(app), label="Current Assessment",tab_style={"margin-left": "8rem"}, label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
-                        dbc.Tab(tab_pa_content(app), label="Prior Assessment", label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
-                    ],
-                    id="card-patient-tabs",
-                    card=True,
-#                    active_tab="tab-ca"
-                ),
-                style={"background":"#f7f7f7"}
 
-            ),
             dbc.CardBody(
                 [
-                    html.Div(
-                        id="card-patient-main",
-                        style={"height":"68vh"}
+                    dbc.Tabs(
+                        [
+                            dbc.Tab(tab_ca_content(app), tab_id="tab-ca", label="Current Assessment", tab_style={"margin-left": "8rem"}, label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
+                            dbc.Tab(tab_pa_content(app), tab_id="tab-pa", label="Prior Assessment", label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
+                        ],
+                        active_tab="tab-ca"
                     )
                 ]
             ),       
@@ -169,7 +160,7 @@ def tab_ca_content(app):
                     ], 
                     style={"width":"100%","padding-right":"6rem","padding-left":"2rem","overflow-y":"scroll"}),
             ],
-            style={"display":"flex","height":"68vh"}
+            style={"display":"flex","height":"74vh"}
         )
 
 
@@ -194,44 +185,44 @@ def tab_assessment_item1(app):
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"width":"26rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem"}, id = 'patient-assessment-status')
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
                                     html.H1("")
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
-                                    html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
                                     html.Img(src=app.get_asset_url("icon-upload-to-the-cloud-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
-                                ]
+                                    html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
+                                ],
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                         ],
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
                     ),
-                    style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"1rem","padding-right":"1rem", "border-radius":"0.8rem"}
+                    style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"0.5rem","padding-right":"1rem", "border-radius":"0.8rem"}
                 )
             ],
             style={"padding":"0.5rem"}
         )
-    
 
 
 def tab_assessment_item2(app, num):
@@ -255,40 +246,43 @@ def tab_assessment_item2(app, num):
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"width":"26rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-questionnaire-status-{}'.format(num))
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
                                     html.H1("", style={"font-size":"1.2rem"}, id = u'patient-questionnaire-completdate-{}'.format(num))
                                 ],
-                                style={"border-right":"1px solid #d0d0d0","padding-right":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
+
                                     html.Div(modal_kccq_questionaire(app), id = u'patient-questionnaire-todo-{}'.format(num), hidden = False),
                                    
                                     html.Div(modal_kccq_questionaire_answer(app), id = u'patient-questionnaire-done-{}'.format(num), hidden = True)
-                                ]
+                                ],
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+
                             ),
                         ],
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
                     ),
-                    style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"1rem","padding-right":"1rem", "border-radius":"0.8rem"}
+                    style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"0.5rem","padding-right":"1rem", "border-radius":"0.8rem"}
                 )
             ],
             style={"padding":"0.5rem"}
@@ -361,6 +355,7 @@ def toggle_navbar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
+
 
 @app.callback(
     Output('patient-ca-active-tasks', 'children'),
