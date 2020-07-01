@@ -14,7 +14,7 @@ from dash.dependencies import Input, Output, State
 
 from utils import *
 from app import app
-import kccq_questionnaire
+
 
 app = dash.Dash(__name__, url_base_pathname='/login/')
 
