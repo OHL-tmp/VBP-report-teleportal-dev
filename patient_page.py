@@ -216,8 +216,8 @@ def tab_assessment_item1(app):
                             ),
                             html.Div(
                                 [
-                                    html.Img(src=app.get_asset_url("icon-test-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
-                                    html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
+                                    html.Img(src=app.get_asset_url("icon-upload-to-the-cloud-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
+                                    html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
