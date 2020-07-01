@@ -45,10 +45,10 @@ q4=["4. Over the past 2 weeks, on average, how many times has shortness of brea
 "Never over the  past 2 weeks"]]
 
 q5=["5. Over the past 2 weeks, on average, how many times have you been forced to sleep sitting up in a chair or with at least 3 pillows to prop you up because of shortness of breath?",
-["Every night"
-"3 or more times per week but not every day"
-"1-2 times per week"
-"Less than once a week"
+["Every night",
+"3 or more times per week but not every day",
+"1-2 times per week",
+"Less than once a week",
 "Never over the  past 2 weeks"]]
 q6=["6. Over the past 2 weeks, how much has your heart failure limited your enjoyment of life?",
 ["It has extremely  limited my enjoyment of life",
