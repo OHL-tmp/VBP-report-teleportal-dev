@@ -14,28 +14,36 @@ from dash.dependencies import Input, Output, State
 
 from utils import *
 from app import app
+import kccq_questionnaire
 
 app = dash.Dash(__name__, url_base_pathname='/login/')
 
 server = app.server
 
+username = "demo-patient"
+password = "demo2020"
 
-def create_layout(app):
+def login_layout(app):
 	
 	return html.Div(
                 [
                     html.Div(
                     	[
                         	html.H1("ValueGen Solution"),
+                            html.Div(id = 'store-location'),
                         	dbc.Card(
                         		dbc.CardBody(
                         			[	
+                                        dbc.Collapse(children = ["\u2757", "Please check your username and password."],
+                                            id = 'login-collapse-check',
+                                            is_open = False
+                                            ),
                         				html.Div(
-                        					dbc.Input(placeholder="Username", type="text", style={"border-radius":"10rem"}),
+                        					dbc.Input(placeholder="Username", type="text", style={"border-radius":"10rem"}, id = "login-input-username"),
                         					style={"padding":"0.5rem"}
                         				),
                         				html.Div(
-                        					dbc.Input(placeholder="Password", style={"border-radius":"10rem"}),
+                        					dbc.Input(placeholder="Password", style={"border-radius":"10rem"}, type = 'password', id = "login-input-password"),
                         					style={"padding":"0.5rem"}
                         				),
                         				dbc.Row(
@@ -50,6 +58,7 @@ def create_layout(app):
 										                    # id = 'manager-button-openmodal-pmpm',
 										                    className="mb-3",
 										                    style={"background-color":"#38160f", "border":"none", "border-radius":"10rem", "font-family":"NotoSans-Regular", "font-size":"1rem","width":"6rem"},
+                                                            id = "login-button-submit"
 										                ),
                         							],
                         							width=3
@@ -70,7 +79,25 @@ def create_layout(app):
             )
 
 
-app.layout = create_layout(app)
+app.layout = login_layout(app)
+
+
+@app.callback(
+    [Output("login-collapse-check", "is_open"),
+#    Output("login-button-submit", "href")
+    Output("store-location", "children")],
+    [Input("login-button-submit", "n_clicks")],
+    [State("login-input-username", "value"),
+    State("login-input-password", "value")]
+    )
+def login_cjeck(n, un, pw):
+    if n:
+        if un == username and pw == password:
+            return False, dcc.Location(pathname = "/patient/", id='login-success')
+        else: 
+            return True, ""
+    else: 
+        return False, ""
 
 if __name__ == "__main__":
     app.run_server(host="127.0.0.1",debug=True,port=8052)

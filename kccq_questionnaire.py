@@ -16,11 +16,13 @@ from dash.dependencies import Input, Output, State
 from utils import *
 from app import app
 
-app = dash.Dash(__name__, url_base_pathname='/login/')
+username = "demo-patient"
+
+app = dash.Dash(__name__, url_base_pathname="/patient/")
 
 server = app.server
 
-username = "demo-patient"
+
 
 q2=["2. Over the past 2 weeks, how many times did you have swelling in your feet, ankles or legs when you woke up in the morning?",
 ["Every morning",
@@ -79,7 +81,8 @@ def modal_kccq_questionaire(app):
                 dbc.Button("submit", id="kccq-modal-button-submit", className="mr-2"),
                 )],
             id = "kccq-modal",
-            size = 'xl'
+            size = 'xl',
+            backdrop = "static"
             )]
         )
 
