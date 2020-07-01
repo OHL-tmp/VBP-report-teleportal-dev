@@ -25,12 +25,12 @@ def create_layout(app):
 	return html.Div(
                 [
                     header(),
-                    html.Div(style={"height":"4rem"}),
+                    html.Div(style={"height":"0rem"}),
                     html.Div(
                         [
                             card_mainlist()
                         ],
-                        style={}
+                        style={"padding-top":"3rem","background-color":"#fff"}
                     )
                 ]
             )
@@ -88,24 +88,15 @@ def header():
 def card_mainlist():
     card = dbc.Card(
         [
-            dbc.CardHeader(
-                dbc.Tabs(
-                    [
-                        dbc.Tab(label="Current Assessment", tab_id="tab-ca", tab_style={"margin-left": "8rem"}, label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
-                        dbc.Tab(label="Prior Assessment", tab_id="tab-pa", label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
-                    ],
-                    id="card-patient-tabs",
-                    card=True,
-                    active_tab="tab-ca"
-                ),
-                style={"background":"#f7f7f7"}
-
-            ),
+            
             dbc.CardBody(
                 [
-                    html.Div(
-                        id="card-patient-main",
-                        style={"height":"68vh"}
+                    dbc.Tabs(
+                        [
+                            dbc.Tab(tab_ca_content(app), tab_id="tab-ca", label="Current Assessment", tab_style={"margin-left": "8rem"}, label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
+                            dbc.Tab(tab_pa_content(app), tab_id="tab-pa", label="Prior Assessment", label_style={"padding-left": "2rem", "padding-right":"2rem","font-family":"NotoSans-SemiBold", "font-size":"0.8rem", "color":"#381610"}),
+                        ],
+                        active_tab="tab-ca"
                     )
                 ]
             ),       
@@ -166,7 +157,7 @@ def tab_ca_content(app):
                     ], 
                     style={"width":"100%","padding-right":"6rem","padding-left":"2rem","overflow-y":"scroll"}),
             ],
-            style={"display":"flex","height":"68vh"}
+            style={"display":"flex","height":"74vh"}
         )
 
 
@@ -186,12 +177,12 @@ def tab_assessment_item1(app):
                                             html.H6(" | "),
                                             html.H6("7/1/2020", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
                                             html.H6(" | "),
-                                            html.H6("questionnaire", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
+                                            html.H6("self-recording", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
                                         ],
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"width":"25rem"}
+                                style={"width":"26rem"}
                             ),
                             html.Div(
                                 [
@@ -252,7 +243,7 @@ def tab_assessment_item2(app):
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"width":"25rem"}
+                                style={"width":"26rem"}
                             ),
                             html.Div(
                                 [
@@ -358,14 +349,6 @@ def toggle_navbar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
-
-@app.callback(Output("card-patient-main", "children"), [Input("card-patient-tabs", "active_tab")])
-def switch_tab(at):
-    if at == "tab-ca":
-        return tab_ca_content(app)
-    elif at == "tab-pa":
-        return tab_pa_content(app)
-    return html.P("This shouldn't ever be displayed...")
 
 
 if __name__ == "__main__":
