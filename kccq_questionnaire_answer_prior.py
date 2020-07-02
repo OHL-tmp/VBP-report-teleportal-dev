@@ -69,24 +69,28 @@ q7=["7. If you had to spend the rest of your life with your heart failure the wa
 "Mostly satisfied",
 "Completely satisfied",]]
 
-def modal_kccq_questionaire_answer(app):
+def modal_kccq_questionaire_answer_prior(app, filename, num):
+    path = 'configure/' + username + '/' + filename
+    answer = json.load(open(path, encoding = 'utf-8'))
     return html.Div(
         [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'kccq-modal-answer-button-open'),
+        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = u'kccq-modal-answer-prior-button-open-{}'.format(num)),
         dbc.Modal(
             [
-            dbc.ModalHeader(id = "kccq-modal-answer-header"),
-            dbc.ModalBody(modal_kccq_questionaire_body_answer()),
+            dbc.ModalHeader(html.Div([
+                        html.H4("KCCQ Questionnaire -- " + answer["answer-date"] + " Completed"),
+                        html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.") ])),
+            dbc.ModalBody(modal_kccq_questionaire_body_answer_prior(answer, num)),
             dbc.ModalFooter(
-                dbc.Button("Close", id="kccq-modal-answer-button-submit", className="mr-2"),
+                dbc.Button("Close", id=u"kccq-modal-answer-prior-button-submit-{}".format(num), className="mr-2"),
                 )],
-            id = "kccq-modal-answer",
+            id = u"kccq-modal-answer-prior-{}".format(num),
             size = 'xl',
             backdrop = "static"
             )]
         )
 
-def modal_kccq_questionaire_body_answer():
+def modal_kccq_questionaire_body_answer_prior( answer, num):
 	
 	return html.Div(
                 [
@@ -124,7 +128,7 @@ def modal_kccq_questionaire_body_answer():
                                                             {"label": "", "value" : 5, "disabled" : True},
                                                             {"label": "", "value" : 6, "disabled" : True},
                                                             ],
-                                                        id = "kccq-modal-answer-radio-q1a",
+                                                        value = answer['q1a'],
                                                         inline = True,
                                                         style = {"display" : "flex", "justify-content" : "space-around"} ),
                                                     
@@ -146,7 +150,7 @@ def modal_kccq_questionaire_body_answer():
                                                             {"label": "", "value" : 5, "disabled" : True},
                                                             {"label": "", "value" : 6, "disabled" : True},
                                                             ],
-                                                        id = "kccq-modal-answer-radio-q1b",
+                                                        value = answer['q1b'],
                                                         inline = True,
                                                         style = {"display" : "flex", "justify-content" : "space-around"} ),
                                                     
@@ -168,7 +172,7 @@ def modal_kccq_questionaire_body_answer():
                                                             {"label": "", "value" : 5, "disabled" : True},
                                                             {"label": "", "value" : 6, "disabled" : True},
                                                             ],
-                                                        id = "kccq-modal-answer-radio-q1c",
+                                                        value = answer['q1c'],
                                                         inline = True,
                                                         
                                                         style = {"display" : "flex", "justify-content" : "space-around"} ),
@@ -181,19 +185,19 @@ def modal_kccq_questionaire_body_answer():
                             )
                         ]
                     ),
-                    question_group_answer(q2[0], q2[1], "kccq-modal-answer-radio-q2"),
-                    question_group_answer(q3[0], q3[1], "kccq-modal-answer-radio-q3"),
-                    question_group_answer(q4[0], q4[1], "kccq-modal-answer-radio-q4"),
-                    question_group_answer(q5[0], q5[1], "kccq-modal-answer-radio-q5"),
-                    question_group_answer(q6[0], q6[1], "kccq-modal-answer-radio-q6"),
-                    question_group_answer(q7[0], q7[1], "kccq-modal-answer-radio-q7"),
+                    question_group_answer_prior(q2[0], q2[1], "q2", answer),
+                    question_group_answer_prior(q3[0], q3[1], "q3", answer),
+                    question_group_answer_prior(q4[0], q4[1], "q4", answer),
+                    question_group_answer_prior(q5[0], q5[1], "q5", answer),
+                    question_group_answer_prior(q6[0], q6[1], "q6", answer),
+                    question_group_answer_prior(q7[0], q7[1], "q7", answer),
 
                 ],
                 # style={"margin-top":"-30rem","background-color":"transparent","text-align":"center"}
             )
 
 
-def question_group_answer(label, value_list, id):
+def question_group_answer_prior(label, value_list, key, answer):
     value_list_len = len(value_list)
 
     options = []
@@ -207,7 +211,7 @@ def question_group_answer(label, value_list, id):
                         dbc.Label(label),
                         dbc.RadioItems(
                             options=options,
-                            id=id,
+                            value = answer[key],
                         ),
                     ]
                 )
@@ -216,7 +220,7 @@ def question_group_answer(label, value_list, id):
 
 
 
-app.layout = modal_kccq_questionaire_answer(app)
+#app.layout = modal_kccq_questionaire_answer_prior(app)
 
 
 

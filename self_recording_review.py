@@ -17,21 +17,18 @@ from utils import *
 from app import app
 
 
-def modal_self_recoding_answer(app):
+def modal_self_recording_review(app):
     return html.Div(
         [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'kccq-modal-button-open'),
+        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'video-modal-review-button-open'),
         dbc.Modal(
             [
-            dbc.ModalHeader(html.Div([
-                        html.H4("???"),
-                        html.H5("?????")]
-                    ),),
-            dbc.ModalBody(),
+            dbc.ModalHeader(id="video-modal-review-header"),
+            dbc.ModalBody(id = "video-modal-review-body"),
             dbc.ModalFooter(
-                dbc.Button("close", id="kccq-modal-button-submit", className="mr-2"),
+                dbc.Button("close", id="video-modal-review-button-submit", className="mr-2"),
                 )],
-            id = "modal-selfrecording-answer",
+            id = "modal-selfrecording-review",
             size = 'xl',
             backdrop = "static"
             )]
