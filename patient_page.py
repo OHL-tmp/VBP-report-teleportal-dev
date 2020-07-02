@@ -5,6 +5,8 @@ import dash_bootstrap_components as dbc
 import dash_table
 import time
 
+import base64
+import cv2
 import datetime
 import json
 import pandas as pd
@@ -17,6 +19,8 @@ from app import app
 
 from kccq_questionnaire import *
 from kccq_questionnaire_answer import *
+from self_recording_upload import *
+from self_recording_review import *
 
 app = dash.Dash(__name__, url_base_pathname='/login/')
 
@@ -149,7 +153,7 @@ def tab_ca_content(app):
 
                 html.Div(
                     [
-                        tab_assessment_item1(app),
+                        tab_assessment_item1(app,1),
                         tab_assessment_item2(app,1),
                         # tab_assessment_item2(app,2),
                         # tab_assessment_item2(app,3),
@@ -164,7 +168,7 @@ def tab_ca_content(app):
         )
 
 
-def tab_assessment_item1(app):
+def tab_assessment_item1(app, num):
     return html.Div(
             [
                 html.Div(
@@ -197,14 +201,14 @@ def tab_assessment_item1(app):
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
-                                    html.H1("Not Started", style={"font-size":"1.2rem"}, id = 'patient-assessment-status')
+                                    html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-assessment-status-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
-                                    html.H1("")
+                                    html.H1("", style={"font-size":"1.2rem"}, id = u'patient-assessment-completdate-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
@@ -289,20 +293,6 @@ def tab_assessment_item2(app, num):
             style={"padding":"0.5rem"}
         )
 
-def modal_video_review():
-    return html.Div([
-            dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),], outline = True, id = 'video-modal-review-button-open'),
-            dbc.Modal([
-                dbc.ModalHeader(id = "video-modal-review-header"),
-                dbc.ModalBody(id = "video-modal-review-body"),
-                dbc.ModalFooter(
-                    dbc.Button("Close", id = "video-modal-review-button-submit", className="mr-2"))
-                ],
-                id = "video-modal-review",
-                size = 'xl',
-                backdrop = 'static')
-        ])
-
 
 def tab_pa_content(app):
     return html.Div(
@@ -375,7 +365,7 @@ def toggle_navbar_collapse(n, is_open):
 @app.callback(
     Output('patient-ca-active-tasks', 'children'),
     [Input('patient-questionnaire-status-1','children'),
-    Input('patient-assessment-status', 'children')]
+    Input('patient-assessment-status-1', 'children')]
     )
 def update_active_tasks(s1,s2):
     status = [s1, s2]
@@ -474,13 +464,114 @@ def open_modal(n1, n2, is_open):
     else:
         return is_open
 
+# video upload modal
+@app.callback(
+    [Output('patient-selfrecording-todo-1', 'hidden'),
+    Output('patient-selfrecording-done-1', 'hidden'),
+    Output('patient-assessment-status-1', "children"),
+    Output('patient-assessment-completdate-1',"children")],
+    [Input('video-modal-upload-button-submit', 'n_clicks')]
+    )
+def toggle_todo_done(n):
+    d = datetime.datetime.now().strftime('%m/%d/%Y')
+
+    if n:
+        return True, False, "Completed", str(d)
+    return False, True, "Not Started", ""
+
+
+@app.callback(
+    Output("modal-selfrecording-upload", 'is_open'),
+    [Input("video-modal-upload-button-open", "n_clicks"),
+    Input("video-modal-upload-button-submit", "n_clicks")],
+    [State("modal-selfrecording-upload", 'is_open')]
+    )
+def open_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    else:
+        return is_open
+
+# def trans_upload_to_download(contents, filename, date):
+#     content_type, content_string = contents.split(',')
+#     decoded = base64.b64decode(content_string)
+#     submit_date = str(datetime.datetime.now().date())
+
+#     filename = filename.replace(" ",'_')    
+#     path = str('configure/') + username +str('/upload/') + submit_date + str('_') + filename
+#     if not os.path.exists(str('configure/') + username +str('/upload/')):
+#         os.makedirs(str('configure/') + username +str('/upload/'))
+#     with open(path, "wb") as file:
+#         file.write(decoded)
+
+#     encoded_video = base64.b64encode(open(path, 'rb').read())
+#     cap = cv2.VideoCapture(path.encode('utf-8')) 
+   
+#     if cap.isOpened(): 
+#         rate = cap.get(5)   
+#         FrameNumber = cap.get(7) 
+#         duration = FrameNumber/rate
+
+
+#     return html.Div([
+#                 html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"30rem","border-bottom":"none", "text-align":"center"} ),
+# #                html.Div(datetime.datetime.now().date())
+#                 ])
+
+@app.callback(
+    [Output("video-modal-review-body", "children"),
+    Output("video-modal-upload-output", "children"),
+    Output("video-modal-review-header", "children")],
+    [Input("video-modal-upload-upload", "filename")],
+    [State('video-modal-upload-upload', 'contents'),
+    State('video-modal-upload-upload','last_modified')]
+    )   
+def upload_video(filename, contents, last_modified):
+    if filename:
+        content_type, content_string = contents.split(',')
+        decoded = base64.b64decode(content_string)
+        submit_date = str(datetime.datetime.now().date())
+        d = datetime.datetime.now().strftime('%m/%d/%Y')
+
+        filename = filename.replace(" ",'_')    
+        path = str('configure/') + username +str('/upload/') + submit_date + str('_') + filename
+        if not os.path.exists(str('configure/') + username +str('/upload/')):
+            os.makedirs(str('configure/') + username +str('/upload/'))
+        with open(path, "wb") as file:
+            file.write(decoded)
+
+        encoded_video = base64.b64encode(open(path, 'rb').read())
+        review_video = html.Div([
+                html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"30rem","border-bottom":"none", "text-align":"center"} ),
+#                html.Div(datetime.datetime.now().date())
+                ])
+
+        cap = cv2.VideoCapture(path) 
+       
+        if cap.isOpened(): 
+            rate = cap.get(5)   
+            FrameNumber = cap.get(7) 
+            duration = int(FrameNumber/rate)
+
+        size = round(os.path.getsize(path)/(1024*1024),1)
+
+        header = html.Div([
+                    html.H4("Berg Balance Scale -- " + str(d) + " Completed"),
+                    html.H5(submit_date + '_' + filename + ' | ' + str(duration) + 's | ' + str(size) + 'MB | Last Modified: ' + str(datetime.datetime.fromtimestamp(last_modified).strftime('%m/%d/%Y')))
+            ])
+        return review_video, html.Div(["\u2705"," Your video has been successfully uploaded."]), header
+    else:
+        return "","",""
+
+
+
 # video review modal
 
 @app.callback(
-    Output("video-modal-review", 'is_open'),
+    Output("modal-selfrecording-review", 'is_open'),
     [Input("video-modal-review-button-open", "n_clicks"),
     Input("video-modal-review-button-submit", "n_clicks")],
-    [State("video-modal-review", 'is_open')]
+    [State("modal-selfrecording-review", 'is_open')]
     )
 def open_modal(n1, n2, is_open):
     if n1 or n2:
