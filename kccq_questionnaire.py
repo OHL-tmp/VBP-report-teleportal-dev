@@ -16,7 +16,7 @@ from dash.dependencies import Input, Output, State
 from utils import *
 from app import app
 
-username = "demo-patient"
+
 
 app = dash.Dash(__name__, url_base_pathname="/patient/")
 

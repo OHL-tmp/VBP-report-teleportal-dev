@@ -19,12 +19,17 @@ from app import app
 
 from kccq_questionnaire import *
 from kccq_questionnaire_answer import *
+from kccq_questionnaire_answer_prior import *
 from self_recording_upload import *
 from self_recording_review import *
+from self_recording_review_prior import *
+
 
 app = dash.Dash(__name__, url_base_pathname='/login/')
 
 server = app.server
+
+global username
 
 
 def create_layout(app):
@@ -153,8 +158,8 @@ def tab_ca_content(app):
 
                 html.Div(
                     [
-                        tab_assessment_item1(app,1),
-                        tab_assessment_item2(app,1),
+                        tab_assessment_item1(app,1, modal_self_recording(app), modal_self_recording_review(app)),
+                        tab_assessment_item2(app,1, modal_kccq_questionaire(app), modal_kccq_questionaire_answer(app)),
                         # tab_assessment_item2(app,2),
                         # tab_assessment_item2(app,3),
                         # tab_assessment_item2(app,4),
@@ -168,7 +173,7 @@ def tab_ca_content(app):
         )
 
 
-def tab_assessment_item1(app, num):
+def tab_assessment_item1(app, num, upload_func, review_func, hidden_status = False, Completion_date = ""):
     return html.Div(
             [
                 html.Div(
@@ -196,27 +201,27 @@ def tab_assessment_item1(app, num):
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-assessment-status-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
-                                    html.H1("", style={"font-size":"1.2rem"}, id = u'patient-assessment-completdate-{}'.format(num))
+                                    html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-assessment-completdate-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
-                                    html.Div(modal_self_recording(app), id = u'patient-selfrecording-todo-{}'.format(num), hidden = False),
+                                    html.Div(upload_func, id = u'patient-selfrecording-todo-{}'.format(num), hidden = hidden_status),
                                    
-                                    html.Div(modal_self_recording_review(app), id = u'patient-selfrecording-done-{}'.format(num), hidden = True)
+                                    html.Div(review_func, id = u'patient-selfrecording-done-{}'.format(num), hidden = not hidden_status)
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
@@ -230,7 +235,7 @@ def tab_assessment_item1(app, num):
         )
 
 
-def tab_assessment_item2(app, num):
+def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func, hidden_status = False, Completion_date = ""):
     return html.Div(
             [
                 html.Div(
@@ -258,28 +263,28 @@ def tab_assessment_item2(app, num):
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-questionnaire-status-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
-                                    html.H1("", style={"font-size":"1.2rem"}, id = u'patient-questionnaire-completdate-{}'.format(num))
+                                    html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-questionnaire-completdate-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
                             ),
                             html.Div(
                                 [
 
-                                    html.Div(modal_kccq_questionaire(app), id = u'patient-questionnaire-todo-{}'.format(num), hidden = False),
+                                    html.Div(questionnaire_func, id = u'patient-questionnaire-todo-{}'.format(num), hidden = hidden_status),
                                    
-                                    html.Div(modal_kccq_questionaire_answer(app), id = u'patient-questionnaire-done-{}'.format(num), hidden = True)
+                                    html.Div(questionnaire_answer_func, id = u'patient-questionnaire-done-{}'.format(num), hidden = not hidden_status)
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
 
@@ -297,47 +302,47 @@ def tab_assessment_item2(app, num):
 def tab_pa_content(app):
     return html.Div(
             [
-                html.Div(
-                    [
-                        html.Div(
-                            html.Div(
-                                [
-                                    html.H6("TOTAL TASKS", style={"color":"#1357dd","width":"3rem"}),
-                                    dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#1357dd"}),
-                                ],
-                                style={"border-radius":"0.8rem", "border":"1px solid #1357dd","padding":"0.5rem"}
-                            ),
-                            style={"padding":"1rem"}
-                        ),
-                        html.Div(
-                            html.Div(
-                                [
-                                    html.H6("ACTIVE TASKS", style={"color":"#dc3545","width":"3rem"}),
-                                    dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#dc3545"}),
-                                ],
-                                style={"border-radius":"0.8rem", "border":"1px solid #dc3545","padding":"0.5rem"}
-                            ),
-                            style={"padding":"1rem"}
-                        ),
-                        html.Div(
-                            html.Div(
-                                [
-                                    html.H6("INCOMING TASKS", style={"color":"#6c757d","width":"4.5rem"}),
-                                    dbc.Badge("0", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#6c757d"}),
-                                ],
-                                style={"border-radius":"0.8rem", "border":"1px solid #6c757d","padding":"0.5rem"}
-                            ),
-                            style={"padding":"1rem"}
-                        ),
-                    ], 
-                    style={"width":"8rem"}),
+                # html.Div(
+                #     [
+                #         html.Div(
+                #             html.Div(
+                #                 [
+                #                     html.H6("TOTAL TASKS", style={"color":"#1357dd","width":"3rem"}),
+                #                     dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#1357dd"}),
+                #                 ],
+                #                 style={"border-radius":"0.8rem", "border":"1px solid #1357dd","padding":"0.5rem"}
+                #             ),
+                #             style={"padding":"1rem"}
+                #         ),
+                #         html.Div(
+                #             html.Div(
+                #                 [
+                #                     html.H6("ACTIVE TASKS", style={"color":"#dc3545","width":"3rem"}),
+                #                     dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#dc3545"}),
+                #                 ],
+                #                 style={"border-radius":"0.8rem", "border":"1px solid #dc3545","padding":"0.5rem"}
+                #             ),
+                #             style={"padding":"1rem"}
+                #         ),
+                #         html.Div(
+                #             html.Div(
+                #                 [
+                #                     html.H6("INCOMING TASKS", style={"color":"#6c757d","width":"4.5rem"}),
+                #                     dbc.Badge("0", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#6c757d"}),
+                #                 ],
+                #                 style={"border-radius":"0.8rem", "border":"1px solid #6c757d","padding":"0.5rem"}
+                #             ),
+                #             style={"padding":"1rem"}
+                #         ),
+                #     ], 
+                #     style={"width":"8rem"}),
 
                 html.Div(
                     [
-                        # tab_assessment_item1(app),
-                        # tab_assessment_item2(app),
-                        # tab_assessment_item2(app),
-                        # tab_assessment_item2(app),
+                         tab_assessment_item1(app, 2, "", modal_self_recording_review_prior(app, "2020-04-01_sample_video.mp4", 2), True, "04/01/2020"),
+                         tab_assessment_item1(app, 3, "", modal_self_recording_review_prior(app, "2020-01-01_sample_video.mp4", 3), True, "01/01/2020"),
+                         tab_assessment_item2(app, 2, "", modal_kccq_questionaire_answer_prior(app, "kccq_questionarie_2020-04-15.json", 2), True, "04/15/2020"),
+                         tab_assessment_item2(app, 3, "", modal_kccq_questionaire_answer_prior(app, "kccq_questionarie_2020-01-15.json", 3), True, "01/15/2020"),
                         # tab_assessment_item2(app),
                         # tab_assessment_item2(app),
                         # tab_assessment_item2(app),
@@ -448,7 +453,8 @@ def open_modal(n1, n2, is_open):
 def store_questionaire_answer(data, n):
     if n:
         answer = json.loads(data)
-        header = "KCCQ Questionnaire --" + answer["answer-date"] + " Completed" 
+        header = html.Div([html.H4("KCCQ Questionnaire --" + answer["answer-date"] + " Completed"),
+                        html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.") ])
         return answer["q1a"],answer["q1b"],answer["q1c"],answer["q2"],answer["q3"],answer["q4"],answer["q5"],answer["q6"],answer["q7"], header
     return "","","","","","","","","",""
 
@@ -492,31 +498,6 @@ def open_modal(n1, n2, is_open):
     else:
         return is_open
 
-# def trans_upload_to_download(contents, filename, date):
-#     content_type, content_string = contents.split(',')
-#     decoded = base64.b64decode(content_string)
-#     submit_date = str(datetime.datetime.now().date())
-
-#     filename = filename.replace(" ",'_')    
-#     path = str('configure/') + username +str('/upload/') + submit_date + str('_') + filename
-#     if not os.path.exists(str('configure/') + username +str('/upload/')):
-#         os.makedirs(str('configure/') + username +str('/upload/'))
-#     with open(path, "wb") as file:
-#         file.write(decoded)
-
-#     encoded_video = base64.b64encode(open(path, 'rb').read())
-#     cap = cv2.VideoCapture(path.encode('utf-8')) 
-   
-#     if cap.isOpened(): 
-#         rate = cap.get(5)   
-#         FrameNumber = cap.get(7) 
-#         duration = FrameNumber/rate
-
-
-#     return html.Div([
-#                 html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"30rem","border-bottom":"none", "text-align":"center"} ),
-# #                html.Div(datetime.datetime.now().date())
-#                 ])
 
 @app.callback(
     [Output("video-modal-review-body", "children"),
@@ -543,7 +524,6 @@ def upload_video(filename, contents, last_modified):
         encoded_video = base64.b64encode(open(path, 'rb').read())
         review_video = html.Div([
                 html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"30rem","border-bottom":"none", "text-align":"center"} ),
-#                html.Div(datetime.datetime.now().date())
                 ])
 
         cap = cv2.VideoCapture(path) 
@@ -578,6 +558,39 @@ def open_modal(n1, n2, is_open):
         return not is_open
     else:
         return is_open
+
+# prior questionnaire answer modal
+
+def open_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    else:
+        return is_open
+
+for n in range(2,4):
+    app.callback(
+        Output(u"kccq-modal-answer-prior-{}".format(n), 'is_open'),
+        [Input("kccq-modal-answer-prior-button-open-{}".format(n), "n_clicks"),
+        Input("kccq-modal-answer-prior-button-submit-{}".format(n), "n_clicks")],
+        [State("kccq-modal-answer-prior-{}".format(n), 'is_open')]
+    )(open_modal)
+
+# prior video review modal
+
+def open_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    else:
+        return is_open
+
+for n in range(2,4):
+    app.callback(
+        Output(u"modal-selfrecording-review-prior-{}".format(n), 'is_open'),
+        [Input("video-modal-review-prior-button-open-{}".format(n), "n_clicks"),
+        Input("video-modal-review-prior-button-submit-{}".format(n), "n_clicks")],
+        [State("modal-selfrecording-review-prior-{}".format(n), 'is_open')]
+    )(open_modal)
+
 
 
 if __name__ == "__main__":

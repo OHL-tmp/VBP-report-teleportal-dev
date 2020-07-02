@@ -2,6 +2,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 
+username = "demo-patient"
 
 def Header_mgmt(app, dashboard_active, drilldown_active, report_active, Homepage_active):
     return html.Div([get_header_mgmt(app, dashboard_active, drilldown_active, report_active, Homepage_active)])
@@ -151,3 +152,4 @@ def make_dash_table(df):
             html_row.append(html.Td([row[i]]))
         table.append(html.Tr(html_row))
     return table
+

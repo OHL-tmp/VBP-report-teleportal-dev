@@ -23,7 +23,7 @@ def modal_self_recording(app):
         dbc.Button(children = [html.Img(src=app.get_asset_url("icon-upload-to-the-cloud-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'video-modal-upload-button-open'),
         dbc.Modal(
             [
-            dbc.ModalHeader("???"),
+            dbc.ModalHeader("Instructions"),
             dbc.ModalBody(video_modal_upload_body()),
             dbc.ModalFooter(
                 dbc.Button("Submit", id="video-modal-upload-button-submit", className="mr-2"),
