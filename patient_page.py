@@ -289,6 +289,20 @@ def tab_assessment_item2(app, num):
             style={"padding":"0.5rem"}
         )
 
+def modal_video_review():
+    return html.Div([
+            dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"}),], outline = True, id = 'video-modal-review-button-open'),
+            dbc.Modal([
+                dbc.ModalHeader(id = "video-modal-review-header"),
+                dbc.ModalBody(id = "video-modal-review-body"),
+                dbc.ModalFooter(
+                    dbc.Button("Close", id = "video-modal-review-button-submit", className="mr-2"))
+                ],
+                id = "video-modal-review",
+                size = 'xl',
+                backdrop = 'static')
+        ])
+
 
 def tab_pa_content(app):
     return html.Div(
@@ -453,6 +467,20 @@ def store_questionaire_answer(data, n):
     [Input("kccq-modal-answer-button-open", "n_clicks"),
     Input("kccq-modal-answer-button-submit", "n_clicks")],
     [State("kccq-modal-answer", 'is_open')]
+    )
+def open_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    else:
+        return is_open
+
+# video review modal
+
+@app.callback(
+    Output("video-modal-review", 'is_open'),
+    [Input("video-modal-review-button-open", "n_clicks"),
+    Input("video-modal-review-button-submit", "n_clicks")],
+    [State("video-modal-review", 'is_open')]
     )
 def open_modal(n1, n2, is_open):
     if n1 or n2:
