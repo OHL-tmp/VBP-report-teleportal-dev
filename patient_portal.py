@@ -143,18 +143,9 @@ def tab_ca_content(app):
                             ),
                             style={"padding":"1rem"}
                         ),
-                        # html.Div(
-                        #     html.Div(
-                        #         [
-                        #             html.H6("INCOMING TASKS", style={"color":"#6c757d","width":"4.5rem"}),
-                        #             dbc.Badge("0", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#6c757d"}),
-                        #         ],
-                        #         style={"border-radius":"0.8rem", "border":"1px solid #6c757d","padding":"0.5rem"}
-                        #     ),
-                        #     style={"padding":"1rem"}
-                        # ),
+                        
                     ], 
-                    style={"width":"8rem"}),
+                    style={"margin-left":"0.38rem","width":"8rem","border-right":"1px solid #d5d5d5"}),
 
                 html.Div(
                     [
@@ -206,7 +197,7 @@ def tab_assessment_item1(app, num, upload_func, review_func, hidden_status = Fal
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
-                                    html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-assessment-status-{}'.format(num))
+                                    html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-assessment-status-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
@@ -268,7 +259,7 @@ def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
-                                    html.H1("Not Started", style={"font-size":"1.2rem"}, id = u'patient-questionnaire-status-{}'.format(num))
+                                    html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-questionnaire-status-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
                             ),
@@ -382,6 +373,7 @@ def update_active_tasks(s1,s2):
     [Output('patient-questionnaire-todo-1', 'hidden'),
     Output('patient-questionnaire-done-1', 'hidden'),
     Output('patient-questionnaire-status-1', "children"),
+    Output('patient-questionnaire-status-1', "style"),
     Output('patient-questionnaire-completdate-1',"children")],
     [Input('kccq-modal-button-submit', 'n_clicks')]
     )
@@ -389,8 +381,8 @@ def toggle_todo_done(n):
     d = datetime.datetime.now().strftime('%m/%d/%Y')
 
     if n:
-        return True, False, "Completed", str(d)
-    return False, True, "Not Started", ""
+        return True, False, "Completed", {"font-size":"1.2rem","color":"#000"},str(d)
+    return False, True, "Not Started", {"font-size":"1.2rem","color":"#dc3545"}, ""
 
 @app.callback(
     Output("kccq-modal-tempdata", "children"),
@@ -475,6 +467,7 @@ def open_modal(n1, n2, is_open):
     [Output('patient-selfrecording-todo-1', 'hidden'),
     Output('patient-selfrecording-done-1', 'hidden'),
     Output('patient-assessment-status-1', "children"),
+    Output('patient-assessment-status-1', "style"),
     Output('patient-assessment-completdate-1',"children")],
     [Input('video-modal-upload-button-submit', 'n_clicks')]
     )
@@ -482,8 +475,8 @@ def toggle_todo_done(n):
     d = datetime.datetime.now().strftime('%m/%d/%Y')
 
     if n:
-        return True, False, "Completed", str(d)
-    return False, True, "Not Started", ""
+        return True, False, "Completed", {"font-size":"1.2rem","color":"#000"},str(d)
+    return False, True, "Not Started", {"font-size":"1.2rem","color":"#dc3545"},""
 
 
 @app.callback(

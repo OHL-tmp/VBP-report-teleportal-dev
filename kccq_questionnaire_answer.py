@@ -72,7 +72,8 @@ q7=["7. If you had to spend the rest of your life with your heart failure the wa
 def modal_kccq_questionaire_answer(app):
     return html.Div(
         [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'kccq-modal-answer-button-open'),
+        html.H6("Review", style={"font-size":"0.7rem"}),
+        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-answer-button-open'),
         dbc.Modal(
             [
             dbc.ModalHeader(id = "kccq-modal-answer-header"),
@@ -83,7 +84,8 @@ def modal_kccq_questionaire_answer(app):
             id = "kccq-modal-answer",
             size = 'xl',
             backdrop = "static"
-            )]
+            )],
+            style={"text-align":"center"}
         )
 
 def modal_kccq_questionaire_body_answer():

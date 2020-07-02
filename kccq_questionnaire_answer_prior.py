@@ -74,7 +74,7 @@ def modal_kccq_questionaire_answer_prior(app, filename, num):
     answer = json.load(open(path, encoding = 'utf-8'))
     return html.Div(
         [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = u'kccq-modal-answer-prior-button-open-{}'.format(num)),
+        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'kccq-modal-answer-prior-button-open-{}'.format(num)),
         dbc.Modal(
             [
             dbc.ModalHeader(html.Div([
