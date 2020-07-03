@@ -37,7 +37,7 @@ def modal_self_recording_review_prior(app, filename, num):
 
 	return html.Div(
 		[
-		dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = u'video-modal-review-prior-button-open-{}'.format(num)),
+		dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'video-modal-review-prior-button-open-{}'.format(num)),
 		dbc.Modal(
 			[
 			dbc.ModalHeader(

@@ -71,22 +71,26 @@ q7=["7. If you had to spend the rest of your life with your heart failure the wa
 
 def modal_kccq_questionaire(app):
     return html.Div(
-        [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-test-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'kccq-modal-button-open'),
-        dbc.Modal(
             [
-            dbc.ModalHeader(html.Div([
-                        html.H4("KCCQ-12 Questionnaire"),
-                        html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.")]
-                    ),),
-            dbc.ModalBody(modal_kccq_questionaire_body()),
-            dbc.ModalFooter(
-                dbc.Button("Submit", id="kccq-modal-button-submit", className="mr-2"),
-                )],
-            id = "kccq-modal",
-            size = 'xl',
-            backdrop = "static"
-            )]
+                html.H6("Entry", style={"font-size":"0.7rem"}),
+                dbc.Button(children = [html.Img(src=app.get_asset_url("icon-test-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-button-open'),
+                dbc.Modal(
+                    [
+                        dbc.ModalHeader(html.Div([
+                                    html.H4("KCCQ-12 Questionnaire"),
+                                    html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.")]
+                                ),),
+                        dbc.ModalBody(modal_kccq_questionaire_body()),
+                        dbc.ModalFooter(
+                            dbc.Button("Submit", id="kccq-modal-button-submit", className="mr-2"),
+                            )
+                    ],
+                    id = "kccq-modal",
+                    size = 'xl',
+                    backdrop = "static"
+                )
+            ],
+            style={"text-align":"center"}
         )
 
 def modal_kccq_questionaire_body():

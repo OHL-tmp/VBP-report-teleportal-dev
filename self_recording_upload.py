@@ -19,19 +19,23 @@ from app import app
 
 def modal_self_recording(app):
     return html.Div(
-        [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-upload-to-the-cloud-100.png"), style={"height":"2.5rem", "padding-top":"10px"})], outline = True, id = 'video-modal-upload-button-open'),
-        dbc.Modal(
             [
-            dbc.ModalHeader("Instructions"),
-            dbc.ModalBody(video_modal_upload_body()),
-            dbc.ModalFooter(
-                dbc.Button("Submit", id="video-modal-upload-button-submit", className="mr-2"),
-                )],
-            id = "modal-selfrecording-upload",
-            size = 'xl',
-            backdrop = "static"
-            )]
+                html.H6("Entry", style={"font-size":"0.7rem"}),
+                dbc.Button(children = [html.Img(src=app.get_asset_url("icon-upload-to-the-cloud-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'video-modal-upload-button-open'),
+                dbc.Modal(
+                    [
+                        dbc.ModalHeader(html.Div("Instructions", style={"font-family":"NotoSans-Heavy","font-size":"2rem"})),
+                        dbc.ModalBody(video_modal_upload_body()),
+                        dbc.ModalFooter(
+                            dbc.Button("Submit", id="video-modal-upload-button-submit", className="mr-2"),
+                        )
+                    ],
+                    id = "modal-selfrecording-upload",
+                    size = 'xl',
+                    backdrop = "static"
+                )
+            ],
+            style={"text-align":"center"}
         )
 
 def video_modal_upload_body():
