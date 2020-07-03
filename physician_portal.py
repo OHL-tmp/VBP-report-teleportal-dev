@@ -22,7 +22,6 @@ app = dash.Dash(__name__, url_base_pathname='/login/')
 
 server = app.server
 
-
 def create_layout(app):
 	
 	return html.Div(
@@ -103,30 +102,19 @@ def header():
 #            dark=True,
         )
     return header
-
+    
 
 def card_mainlist():
+
     card = dbc.Card(
         [
+            html.Div(id = 'physician-patient-tempdata', style = {"display":"none"}),
             status(),
             list_header(),
 
             dbc.CardBody(
-                [
-                    patient_item(app, "Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3),
-                    patient_item(app, "Mary Kim","5/12/1988",32,"F",2,1,"8/15/2020",2),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                    patient_item(app, "Rhianna Kenny","9/19/1994",26,"F",4,3,"8/15/2020",1),
-                ],
+                [],
+                id = 'physician-card-patient',
                 style={"overflow-y":"scroll"}
             ),       
         ],
@@ -139,8 +127,23 @@ def list_header():
     return html.Div(
             [
 
-                html.Div(
-                    html.H1("Patient List", style={"font-size":"2rem","color":"#000"}),
+                dbc.Row(
+                    [
+                    dbc.Col(html.H1("Patient List", style={"font-size":"2rem","color":"#000"})),
+                    dbc.Col(),
+                    dbc.Col([
+                        html.H6("Sort By"),
+                        dbc.Select(
+                        id = 'physician-select-sorting',
+                        options = [
+                            {"label":"Patient Name", "value":0},
+                            {"label":"Assessments to be Reviewed", "value":5},
+                        ],
+                        value = 5,
+                        bs_size = 'sm',
+                        )],
+                        ),
+                    ],
                     style={"text-align":"start","padding-bottom":"2rem"},
                 ),
                 dbc.Row(
@@ -209,7 +212,7 @@ def status():
                                     html.Div(
                                         [
                                             html.H6("TOTAL PATIENT ASSIGNED", style={"color":"#fff","width":"7rem"}),
-                                            dbc.Badge("5", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background":"#fff","color":"#1357dd"}),
+                                            dbc.Badge("", id = 'physician-badge-patientct',style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background":"#fff","color":"#1357dd"}),
                                         ],
                                         style={"border-radius":"0.8rem", "border":"1px solid #1357dd","background":"#1357dd","padding":"0.5rem","box-shadow":"0 4px 8px 0 rgba(19, 86, 221, 0.4), 0 6px 20px 0 rgba(19, 86, 221, 0.1)"}
                                     ),
@@ -219,7 +222,7 @@ def status():
                                     html.Div(
                                         [
                                             html.H6("TOTAL ACTIVE TASKS", style={"color":"#fff","width":"7rem"}),
-                                            dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background":"#fff","color":"#dc3545"}),
+                                            dbc.Badge("", id = 'physician-badge-activetasks', style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background":"#fff","color":"#dc3545"}),
                                         ],
                                         style={"border-radius":"0.8rem", "border":"1px solid #dc3545","background":"#dc3545","padding":"0.5rem","box-shadow":"0 4px 8px 0 rgba(220, 53, 70, 0.4), 0 6px 20px 0 rgba(220, 53, 70, 0.1)"}
                                     ),
@@ -400,10 +403,33 @@ def toggle_navbar_collapse(n, is_open):
         return not is_open
     return is_open
 
+@app.callback(
+    Output("physician-patient-tempdata","children"),
+    [Input("physician-select-sorting","value"),]
+    )
+def refresh_patient_info(v):
+    infos = [["Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3],["Rhianna Kenny","9/19/1994",25,"F",4,0,"8/15/2020",1],["Mary Kim","5/12/1988",32,"F",2,0,"8/15/2020",2],]
+    if v:
+        infos = sorted(infos, key = lambda x: x[int(v)], reverse = True)
+        print(infos)
 
+    physician_patient_tempdata = dict(patient_info=infos)
+    return json.dumps(physician_patient_tempdata)
 
-
-
+@app.callback(
+    [
+    Output("physician-card-patient", 'children'),
+    Output('physician-badge-patientct', 'children'),
+    Output('physician-badge-activetasks', 'children')
+    ],
+    [
+    Input("physician-patient-tempdata", 'children')
+    ]
+    )
+def update_patient_card(data):
+    physician_patient_tempdata = json.loads(data)
+    infos = physician_patient_tempdata['patient_info']
+    return [patient_item(app, *i) for i in infos], len(infos), sum(int(patient[5]) for patient in infos)
 
 
 if __name__ == "__main__":
