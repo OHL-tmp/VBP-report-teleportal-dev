@@ -90,13 +90,16 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                             dbc.ModalHeader(
                                 html.Div(
                                     [
-                                        html.H2(str(pid), style={"font-size":"2rem", "color":"#1357DD"})
+                                        html.H2(name, style={"font-size":"2rem", "color":"#1357DD"}),
+                                        html.H5(str(dob) + ' | ' + str(age) + ' | ' + str(gender))
                                     ],
                                     style={"color":"#1357DD"}
                                 )
                             ),
                             dbc.ModalBody(
-                                
+                                html.Div([
+                                    physician_assessment_item("07/03/2020", pid, itemid = 1)
+                                    ])
                             ),
                             dbc.ModalFooter(
                                 dbc.Button(
@@ -112,6 +115,67 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                     ),
             ],
             style={"padding-left":"5rem","padding-right":"7rem","padding-top":"0.5rem"}
+        )
+
+def physician_assessment_item(Completion_date, pid, itemid):
+    cd = datetime.datetime.strptime(Completion_date, '%m/%d/%Y')
+    rd = cd + datetime.timedelta(days = 7)
+    rd = str(datetime.datetime.strftime(rd, '%m/%d/%Y'))
+    return html.Div(
+            [
+                html.Div([
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.H1("Berg Balance Scale", style={"font-size":"1.5rem"}),
+                                    html.Div(
+                                        [
+                                            dbc.Badge("Functional Assessment", color="info", style={"font-family":"NotoSans-Light","font-size":"0.8rem"}),
+                                            html.H6("Dr.Smith", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
+                                            html.H6(" | "),
+                                            html.H6("self-recording", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
+                                        ],
+                                        style={"display":"flex","font-size":"0.8rem"}
+                                    ),
+                                ],
+                                style={"width":"26rem"}
+                            ),
+                            html.Div(
+                                [
+                                    html.H6("Patient Completion Date", style={"font-size":"0.7rem"}),
+                                    html.H1(Completion_date, style={"font-size":"1.2rem"}, 
+#                                        id = u'patient-assessment-completdate-{}'.format(num)
+                                        )
+                                ],
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                            ),
+                            html.Div(
+                                [
+                                    html.H6("Physician Review Due Date", style={"font-size":"0.7rem"}),
+                                    html.H1(rd, style={"font-size":"1.2rem","color":"#dc3545"}, 
+#                                        id = u'patient-assessment-status-{}'.format(num)
+                                        )
+                                ],
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, 
+                            ),
+                            html.Div(
+                                [  
+                                    dbc.Button("Start Review", id = {"type": "physician-assessment-open-item", 'index': str(pid)+str(itemid)}),
+                                ],
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                            ),
+                        ],
+                        style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
+                    ),
+                    html.Div([
+                        dbc.Collapse(str(pid)+str(itemid), id = {"type": "physician-assessment-collapse", 'index': str(pid)+str(itemid)})
+                        ]
+                    ),],
+                    style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"0.5rem","padding-right":"1rem", "border-radius":"0.8rem"}
+                )
+            ],
+            style={"padding":"0.5rem"}
         )
 
 

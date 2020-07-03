@@ -283,25 +283,28 @@ def refresh_patient_info(v):
     infos = [["Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3],["Rhianna Kenny","9/19/1994",25,"F",4,0,"8/15/2020",1],["Mary Kim","5/12/1988",32,"F",2,0,"8/15/2020",2],]
     if v:
         infos = sorted(infos, key = lambda x: x[int(v)], reverse = True)
-        print(infos)
 
     physician_patient_tempdata = dict(patient_info=infos)
     return json.dumps(physician_patient_tempdata)
 
 @app.callback(
     [
-    Output("physician-card-patient", 'children'),
+    Output("physician-patient-list", "children"),
     Output('physician-badge-patientct', 'children'),
-    Output('physician-badge-activetasks', 'children')
+    Output('physician-badge-activetasks', 'children'),
     ],
     [
-    Input("physician-patient-tempdata", 'children')
+    Input("physician-patient-tempdata", 'children'),
     ]
     )
 def update_patient_card(data):
     physician_patient_tempdata = json.loads(data)
     infos = physician_patient_tempdata['patient_info']
-    return [html.Div(patient_item(app, *patient, pid=i)) for i, patient in enumerate(infos)], len(infos), sum(int(patient[5]) for patient in infos)
+    patient_list = [
+            html.Div(patient_item(app, *patient, pid=i)) for i, patient in enumerate(infos)
+    ]
+    return patient_list, len(infos), sum(int(patient[5]) for patient in infos)
+
 
 @app.callback(
     Output({"type": "physician-modal-patient", 'index': MATCH}, "is_open"),
@@ -313,6 +316,15 @@ def toggle_modal_patient_item(n1, n2, is_open):
         return not is_open
     return is_open
 
+@app.callback(
+    Output({"type": "physician-assessment-collapse", 'index': MATCH}, "is_open"),
+    [Input({"type": "physician-assessment-open-item", 'index': MATCH}, "n_clicks")],
+    [State({"type": "physician-assessment-collapse", 'index': MATCH}, "is_open")],
+)
+def toggle_modal_patient_item(n,  is_open):
+    if n:
+        return not is_open
+    return is_open
 
 
 
