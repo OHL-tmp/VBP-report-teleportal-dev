@@ -527,9 +527,12 @@ def toggle_todo_done(n):
     State("kccq-modal-radio-q4", "value"),
     State("kccq-modal-radio-q5", "value"),
     State("kccq-modal-radio-q6", "value"),
-    State("kccq-modal-radio-q7", "value")]
+    State("kccq-modal-radio-q7", "value"),
+    State("kccq-modal-radio-q8a", "value"),
+    State("kccq-modal-radio-q8b", "value"),
+    State("kccq-modal-radio-q8c", "value"),]
     )
-def store_questionaire_answer(n, q1a, q1b, q1c, q2, q3, q4, q5, q6, q7):
+def store_questionaire_answer(n, q1a, q1b, q1c, q2, q3, q4, q5, q6, q7, q8a, q8b, q8c):
     submit_date = str(datetime.datetime.now().date())
     answer = {"answer-date" : str(datetime.datetime.now().date().strftime('%m/%d/%Y')), 
                 "q1a" : q1a, "q1b" : q1b, "q1c" : q1c,
@@ -538,7 +541,8 @@ def store_questionaire_answer(n, q1a, q1b, q1c, q2, q3, q4, q5, q6, q7):
                 "q4" : q4,
                 "q5" : q5,
                 "q6" : q6,
-                "q7" : q7}
+                "q7" : q7,
+                "q8a" : q8a, "q8b" : q8b, "q8c" : q8c}
     path = str('configure/') + username +str('/kccq_questionarie_') + submit_date + str('.json')
     if not os.path.exists(str('configure/') + username +str('/')):
         os.makedirs(str('configure/') + username +str('/'))

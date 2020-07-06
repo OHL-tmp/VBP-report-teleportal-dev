@@ -189,7 +189,96 @@ def modal_kccq_questionaire_body_answer():
                     question_group_answer(q5[0], q5[1], "kccq-modal-answer-radio-q5"),
                     question_group_answer(q6[0], q6[1], "kccq-modal-answer-radio-q6"),
                     question_group_answer(q7[0], q7[1], "kccq-modal-answer-radio-q7"),
-
+                    html.Div(
+                        [
+                            html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
+                            html.Div(
+                                [
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(width = 2),
+                                                dbc.Col("Severely Limited"),
+                                                dbc.Col("Limited quite a bit"),
+                                                dbc.Col("Moderately Limited"),
+                                                dbc.Col("Slightly Limited"),
+                                                dbc.Col("Did not limit at all"),
+                                                dbc.Col("Does not apply or did not do for other reasons"),
+                                            ],
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("a. Hobbies, recreational activities", width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 1, "disabled" : True},
+                                                            {"label": "", "value" : 2, "disabled" : True},
+                                                            {"label": "", "value" : 3, "disabled" : True},
+                                                            {"label": "", "value" : 4, "disabled" : True},
+                                                            {"label": "", "value" : 5, "disabled" : True},
+                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            ],
+                                                        id = "kccq-modal-answer-radio-q8a",
+                                                        inline = True,
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("b. Working or doing household chores",width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 1, "disabled" : True},
+                                                            {"label": "", "value" : 2, "disabled" : True},
+                                                            {"label": "", "value" : 3, "disabled" : True},
+                                                            {"label": "", "value" : 4, "disabled" : True},
+                                                            {"label": "", "value" : 5, "disabled" : True},
+                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            ],
+                                                        id = "kccq-modal-answer-radio-q8b",
+                                                        inline = True,
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("c. Visiting family or friends out of your home",width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 1, "disabled" : True},
+                                                            {"label": "", "value" : 2, "disabled" : True},
+                                                            {"label": "", "value" : 3, "disabled" : True},
+                                                            {"label": "", "value" : 4, "disabled" : True},
+                                                            {"label": "", "value" : 5, "disabled" : True},
+                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            ],
+                                                        id = "kccq-modal-answer-radio-q8c",
+                                                        inline = True,
+                                                        
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                ]
+                            )
+                        ]
+                    ),
                 ],
                 # style={"margin-top":"-30rem","background-color":"transparent","text-align":"center"}
             )

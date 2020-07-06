@@ -11,11 +11,16 @@ import datetime
 import json
 import pandas as pd
 import numpy as np
+import glob
+import os
 
 from dash.dependencies import Input, Output, State
+from statistics import mean
 
 from utils import *
 from app import app
+from kccq_questionnaire_answer_prior import *
+from figure import *
 
 
 def patient_item(app, name, dob, age, gender, current_assessment, assessments_2breviewed, review_duedate, icon, pid):
@@ -128,6 +133,23 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                     style={"display":"flex", "padding-bottom":"60px"}
                                 )
                             ),
+
+                            dbc.ModalBody([
+                                html.Div([
+                                    html.H6("Sort By"),
+                                    dbc.Select(
+                                    id = {'type':'physician-modal-select-sorting', 'index':pid},
+                                    options = [
+                                        {"label":"Category", "value":0},
+                                        {"label":"Patient Completion Date", "value":3},
+                                    ],
+                                    value = 0,
+                                    bs_size = 'sm',
+                                    )]),
+                                html.Div([
+#                                   physician_assessment_item("Functional Assessment","Berg Balance Scale","Self Recording",str(datetime.datetime.now().date().strftime('%m/%d/%Y')), "Start Review", pid,1)
+                                    ],id = {'type':'physician-modal-patient-modalbody', 'index':pid}),
+                            ]),
                             dbc.ModalFooter(
                                 dbc.Button(
                                     "CLOSE", id={"type": "physician-close-patient", 'index': pid}, className="ml-auto",
@@ -144,8 +166,9 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
             style={"padding-left":"5rem","padding-right":"7rem","padding-top":"0.5rem"}
         )
 
-def physician_assessment_item(completion_date, pid, itemid):
-    cd = datetime.datetime.strptime(completion_date, '%m/%d/%Y')
+
+def physician_assessment_item(category,assessment,assessment_type,Completion_date, result, pid, itemid):
+    cd = datetime.datetime.strptime(Completion_date, '%m/%d/%Y')
     rd = cd + datetime.timedelta(days = 7)
     rd = str(datetime.datetime.strftime(rd, '%m/%d/%Y'))
     return html.Div(
@@ -155,13 +178,14 @@ def physician_assessment_item(completion_date, pid, itemid):
                         [
                             html.Div(
                                 [
-                                    html.H1("Berg Balance Scale", style={"font-size":"1.5rem"}),
+                                    html.H1(assessment, style={"font-size":"1.5rem"}),
                                     html.Div(
                                         [
-                                            dbc.Badge("Functional Assessment", color="info", style={"font-family":"NotoSans-Light","font-size":"0.8rem",}),
+
+                                            dbc.Badge(category, color="info", style={"font-family":"NotoSans-Light","font-size":"0.8rem"}),
                                             html.H6("Dr.Smith", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
                                             html.H6(" | "),
-                                            html.H6("self-recording", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
+                                            html.H6(assessment_type, style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
                                         ],
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
@@ -188,7 +212,8 @@ def physician_assessment_item(completion_date, pid, itemid):
                             ),
                             html.Div(
                                 [  
-                                    dbc.Button("Start Review", id = {"type": "physician-assessment-open-item", 'index': str(pid)+str(itemid)}, outline=True, color="dark", style={"border-radius":"0.8rem","font-size":"0.8rem","font-family":"NotoSans-Regular"}),
+
+                                    dbc.Button(result, id = {"type": "physician-assessment-open-item", 'index': str(pid)+'-'+str(itemid)}),
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
@@ -196,7 +221,7 @@ def physician_assessment_item(completion_date, pid, itemid):
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
                     ),
                     html.Div([
-                        dbc.Collapse(str(pid)+str(itemid), id = {"type": "physician-assessment-collapse", 'index': str(pid)+str(itemid)})
+                        dbc.Collapse(patient_collapse_item(assessment_type, Completion_date, result), id = {"type": "physician-assessment-collapse", 'index': str(pid)+'-'+str(itemid)})
                         ]
                     ),],
                     style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05)","padding-left":"0.5rem","padding-right":"1rem", "border-radius":"0.8rem"}
@@ -205,7 +230,79 @@ def physician_assessment_item(completion_date, pid, itemid):
             style={"padding":"0.5rem"}
         )
 
+def patient_collapse_item(assessment_type, Completion_date, result):
+    cd = datetime.datetime.strptime(Completion_date, '%m/%d/%Y')
+    submit_date = str(cd.date())
+    if assessment_type == "Self Recording":
+        path = str('configure/') + username +str('/upload/') + submit_date + str('_')
+        file = glob.glob(path +'*.*')[0].replace('\\','/')
+        encoded_video = base64.b64encode(open(file, 'rb').read())
+        review_video = html.Div([
+                html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"20rem","border-bottom":"none", "text-align":"center"} ),
+                ])
+        cap = cv2.VideoCapture(file)
+        if cap.isOpened(): 
+            rate = cap.get(5)   
+            FrameNumber = cap.get(7) 
+            duration = int(FrameNumber/rate)
 
+        size = round(os.path.getsize(file)/(1024*1024),1)
+        return html.Div([
+            dbc.Row([
+                dbc.Col(review_video),
+                dbc.Col([
+                    dbc.Row("Video Uploaded on:  " + Completion_date),
+                    dbc.Row("Video Length:  " + str(duration) + 's'),
+                    dbc.Row("Video Size:  " + str(size) + 'MB')
+                    ])
+                ]),
+            dbc.Row(["Physician Assessment:"])
+            ])
+    else:
+        file = str('configure/') + username +str('/kccq_questionarie_' + submit_date + '.json')
+        answer = json.load(open(file), encoding = 'utf-8')
+        pl_score, sf_score, ql_score, sl_score, all_score = cal_kccq_score(answer)
+        current_score = [pl_score, sf_score, ql_score, sl_score, all_score]
+        df=data_process(df_kccq_score,current_score,Completion_date)
+        if result == "Start Review":
+            summary_graph = [html.Div(children=tbl(df)),
+                dcc.Graph(figure=bargraph(df),config={'displayModeBar': False}),]
+        else: 
+            summary_graph = []
+        return html.Div([
+            html.H5("KCCQ_12 Questionnaire submitted by " + Completion_date),
+            dbc.Row([
+                dbc.Col("Physical Limitation"),
+                dbc.Col("Symptom Frequency"),
+                dbc.Col("Quality of Life"),
+                dbc.Col("Social Limitation"),
+                dbc.Col("Summary Score"),
+                ]),
+            dbc.Row([
+                dbc.Col(pl_score),
+                dbc.Col(sf_score),
+                dbc.Col(ql_score),
+                dbc.Col(sl_score),
+                dbc.Col(all_score),
+                ]),
+            html.Div(summary_graph),
+            modal_kccq_questionaire_body_answer_prior(answer)
+            ])
+
+def cal_kccq_score(answer):
+    pl = list(filter(None, [answer['q1a'],answer['q1b'],answer['q1c']]))
+    sf = list(filter(None, [answer['q2'],answer['q3'],answer['q4'],answer['q5']]))
+    ql = list(filter(None, [answer['q6'],answer['q7']]))
+    sl = list(filter(None, [answer['q8a'],answer['q8b'],answer['q8c']]))
+
+    pl_score = round(mean(pl),0) if len(pl) > 0 else 0
+    sf_score = round(mean(sf),0) if len(sf) > 0 else 0
+    ql_score = round(mean(ql),0) if len(ql) > 0 else 0
+    sl_score = round(mean(sl),0) if len(sl) > 0 else 0
+
+    allanswer = pl + sf + ql + sl
+    all_score = round(mean(allanswer),0) if len(allanswer) > 0 else 0
+    return pl_score, sf_score, ql_score, sl_score, all_score
 
 if __name__ == "__main__":
     app.run_server(host="127.0.0.1",debug=True,port=8052)

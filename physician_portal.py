@@ -429,9 +429,8 @@ def toggle_navbar_collapse(n, is_open):
     [Input("physician-select-sorting","value"),]
     )
 def refresh_patient_info(v):
-    infos = [["Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3],
-            ["Rhianna Kenny","9/19/1994",25,"F",4,0,"8/15/2020",1],
-            ["Mary Kim","5/12/1988",32,"F",2,0,"8/15/2020",2],]
+    infos = [["Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3, 0],["Rhianna Kenny","9/19/1994",25,"F",0,0,"8/15/2020",1, 1],["Mary Kim","5/12/1988",32,"F",0,0,"8/15/2020",2, 2],]
+
     if v:
         infos = sorted(infos, key = lambda x: x[int(v)], reverse = True)
 
@@ -452,8 +451,9 @@ def update_patient_card(data):
     physician_patient_tempdata = json.loads(data)
     infos = physician_patient_tempdata['patient_info']
     patient_list = [
-            html.Div(patient_item(app, *patient, pid=i)) for i, patient in enumerate(infos)
-        ]
+
+            html.Div(patient_item(app, *patient)) for patient in infos
+    ]
     return patient_list, len(infos), sum(int(patient[5]) for patient in infos)
 
 
@@ -466,6 +466,24 @@ def toggle_modal_patient_item(n1, n2, is_open):
     if n1 or n2:
         return not is_open
     return is_open
+
+@app.callback(
+    Output({'type':'physician-modal-patient-modalbody', 'index':MATCH}, "children"),
+    [Input({'type':'physician-modal-select-sorting', 'index':MATCH}, "value")],
+    [State({'type':'physician-modal-select-sorting', 'index':MATCH}, "id")]
+    )
+def update_review_assessment(v, id):
+    patient_assessment_detail = [ ["Functional Assessment","Berg Balance Scale","Self Recording",str(datetime.datetime.now().date().strftime('%m/%d/%Y')),"Start Review", 0, 0],["Functional Assessment","Berg Balance Scale","Self Recording","04/01/2020","50", 0, 1],["Functional Assessment","Berg Balance Scale","Self Recording","01/01/2020","45", 0, 2],["Patient Health Status","KCCQ-12","Questionnaire",str(datetime.datetime.now().date().strftime('%m/%d/%Y')),"Start Review", 0, 3],["Patient Health Status","KCCQ-12","Questionnaire","04/15/2020","75", 0, 4],["Patient Health Status","KCCQ-12","Questionnaire","01/15/2020","69", 0, 5] ]
+
+    patient_assessment_detail_filtered = [item for item in patient_assessment_detail if item[5] == id['index']]
+    if v:
+        patient_assessment_detail_filtered = sorted(patient_assessment_detail_filtered, key = lambda x: x[int(v)], reverse = True)
+
+    patient_assessment_list = [
+      physician_assessment_item(*assessment) for assessment in patient_assessment_detail_filtered
+    ]
+
+    return patient_assessment_list
 
 @app.callback(
     Output({"type": "physician-assessment-collapse", 'index': MATCH}, "is_open"),
