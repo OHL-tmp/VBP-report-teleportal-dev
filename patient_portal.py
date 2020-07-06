@@ -25,6 +25,7 @@ from self_recording_review import *
 from self_recording_review_prior import *
 
 
+
 app = dash.Dash(__name__, url_base_pathname='/login/')
 
 server = app.server
@@ -32,7 +33,89 @@ server = app.server
 global username
 
 
-def create_layout(app):
+username = "demo"
+password = "demo2020"
+
+
+def login_layout(app):
+    return html.Div(
+                [
+                    html.Div(
+                        [
+                            html.Div(
+                                html.Img(src=app.get_asset_url("coeus.png"),style={"height":"4rem"}),
+                                style={"text-align":"center","padding":"4rem"}
+                            ),
+                            html.Div(
+                                html.H2("Patient",style={"font-size":"1.6rem","padding-left":"20px"}),
+                                style={"text-align":"start"}
+                            ),
+                            html.Div(id = 'store-location'),
+                            dbc.Card(
+                                dbc.CardBody(
+                                    [   
+                                        html.Div(style={"padding-top":"20px"}),
+                                        dbc.Collapse(children = ["\u2757", "Please check your username and password."],
+                                            id = 'login-collapse-check',
+                                            is_open = False,
+                                            style={"text-align":"center"}
+                                            ),
+                                        html.Div(
+                                            [
+                                                html.Form(
+                                                    [
+                                                        html.Div(
+                                                            dbc.Input(placeholder="Username", type="text", style={"border-radius":"10rem"}, id = "login-input-username"),
+                                                            style={"padding":"0.5rem"}
+                                                        ),
+                                                        html.Div(
+                                                            dbc.Input(placeholder="Password", style={"border-radius":"10rem"}, type = 'password', id = "login-input-password"),
+                                                            style={"padding":"0.5rem"}
+                                                        ),
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Col(
+                                                                    html.Div(),
+                                                                ),
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Button(
+                                                                            "Log In",
+                                                                            # id = 'manager-button-openmodal-pmpm',
+                                                                            className="mb-3",
+                                                                            style={"background-color":"#38160f", "border":"none", "border-radius":"10rem", "font-family":"NotoSans-Regular", "font-size":"1rem","width":"6rem"},
+                                                                            id = "login-button-submit"
+                                                                        ),
+                                                                    ],
+                                                                    width=3
+                                                                ),
+                                                                dbc.Col(
+                                                                    html.Div(),
+                                                                ),
+                                                            ],
+                                                            style={"padding-top":"2rem", "padding-right":"1rem"}
+                                                        )
+                                                    ], 
+                                                    action='/login', 
+                                                    method='post'
+                                                )
+                                            ]
+                                        )
+                                    ],
+                                    style={"padding-left":"2rem","padding-right":"2rem"}
+                                ),
+                                className="mb-3",
+                                style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1)", "border":"none", "border-radius":"1rem"}
+                            )
+                        ],
+                        style={"background-color":"transparent", "border":"none", "width":"500px", "margin":"auto", "padding-top":"5vh"}
+                    ),
+                ],
+                style={"background":"url(./assets/patient-login.png)","height":"100vh"},
+                id="login-layout"
+            )
+
+def patient_layout(app):
 	
 	return html.Div(
                 [
@@ -44,7 +127,8 @@ def create_layout(app):
                         ],
                         style={"padding-top":"3rem","background-color":"#fff"}
                     )
-                ]
+                ],
+                id="patient-layout"
             )
 
 
@@ -53,7 +137,13 @@ def header():
     search_bar = dbc.Row(
         [
             dbc.Col(
-                dbc.Button("Log Out", outline=True, color="dark", style={"border-radius":"10rem", "width":"6rem","height":"2rem","font-size":"0.7rem"}),
+                dbc.Button(
+                    "Log Out", 
+                    outline=True, 
+                    color="dark", 
+                    style={"border-radius":"10rem", "width":"6rem","height":"2rem","font-size":"0.7rem"},
+                    id = "logout-button"
+                ),
                 width="auto",
             ),
         ],
@@ -68,7 +158,7 @@ def header():
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            dbc.Col(html.Img(src=app.get_asset_url("profile_default.png"), style={"height":"2.5rem", "padding-top":"0px"}), style={"padding-right":"2rem"}, width="auto"),
+                            dbc.Col(html.Img(src=app.get_asset_url("profile_default3.png"), style={"height":"2.5rem", "padding-top":"0px"}), style={"padding-right":"2rem"}, width="auto"),
                             dbc.Col(
                                 html.Div(
                                     [
@@ -192,21 +282,21 @@ def tab_assessment_item1(app, num, upload_func, review_func, hidden_status = Fal
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-assessment-status-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
                                     html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-assessment-completdate-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
                             html.Div(
                                 [
@@ -214,7 +304,7 @@ def tab_assessment_item1(app, num, upload_func, review_func, hidden_status = Fal
                                    
                                     html.Div(review_func, id = u'patient-selfrecording-done-{}'.format(num), hidden = not hidden_status)
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
                         ],
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
@@ -254,21 +344,21 @@ def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func
                                     html.H6("Due Date", style={"font-size":"0.7rem"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Status", style={"font-size":"0.7rem"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-questionnaire-status-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, hidden = hidden_status
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
                                     html.H6("Completion Date", style={"font-size":"0.7rem"}),
                                     html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-questionnaire-completdate-{}'.format(num))
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
                             html.Div(
                                 [
@@ -277,7 +367,7 @@ def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func
                                    
                                     html.Div(questionnaire_answer_func, id = u'patient-questionnaire-done-{}'.format(num), hidden = not hidden_status)
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
 
                             ),
                         ],
@@ -345,7 +435,49 @@ def tab_pa_content(app):
         )
 
 
-app.layout = create_layout(app)
+app.layout = html.Div(
+        [
+            
+            login_layout(app),
+            
+            dbc.Fade(
+                patient_layout(app),
+                id="fade-transition",
+                is_in=True,
+                style={"transition": "opacity 100ms ease"},
+            ),
+        ]
+    )
+
+
+@app.callback(
+    [
+        Output("login-collapse-check", "is_open"),
+        Output("login-layout", "hidden"),
+        Output("patient-layout", "hidden"),
+    ],
+    [
+        Input("login-button-submit", "n_clicks"),
+        Input("logout-button", "n_clicks")
+    ],
+    [
+        State("login-input-username", "value"),
+        State("login-input-password", "value")
+    ]
+    )
+def login_check(nin, nout, un, pw):
+    ctx = dash.callback_context
+    if ctx.triggered[0]['prop_id'].split('.')[0] == 'login-button-submit':
+        if un == username and pw == password:
+            return False, True, False
+        else: 
+            return True, False, True
+    elif ctx.triggered[0]['prop_id'].split('.')[0] == 'logout-button':
+        return False, False, True
+    else:
+        return False, False, True
+
+
 
 @app.callback(
     Output("navbar-collapse", "is_open"),

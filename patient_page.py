@@ -63,7 +63,12 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                     ),
                                     dbc.Col(
                                         html.Div(
-                                            html.H1(str(assessments_2breviewed), style={"font-size":"1rem","color":"#fff","background-color":"#dc3545","border-radius":"10rem","width":"1.6rem","padding":"0.2rem","margin-left":"3rem","margin-top":"-0.2rem"}),
+                                            [
+                                                html.H1(str(assessments_2breviewed), style={"font-size":"1rem","color":"#fff","background-color":"#dc3545","border-radius":"10rem","width":"1.6rem","padding":"0.2rem","margin-left":"3rem","margin-top":"-0.2rem"})
+                                            if assessments_2breviewed > 0
+                                            else
+                                                html.H1("--", style={"font-size":"1rem","color":"#000","background-color":"#fff","border-radius":"10rem","width":"1.6rem","padding":"0.2rem","margin-left":"3rem","margin-top":"-0.2rem"}),
+                                            ],
                                             style={"text-align":"center"}
                                         ),
                                         width=2
@@ -87,19 +92,41 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                 ),
                 dbc.Modal(
                         [
-                            dbc.ModalHeader(
+                            
+                            dbc.ModalBody(
                                 html.Div(
                                     [
-                                        html.H2(name, style={"font-size":"2rem", "color":"#1357DD"}),
-                                        html.H5(str(dob) + ' | ' + str(age) + ' | ' + str(gender))
+                                        html.Div(
+                                            [
+                                                html.Div(
+                                                    [
+                                                        html.Img(src=app.get_asset_url("profile_default"+str(icon)+".png"), style={"height":"80px", "padding":"10px","margin-top":"30px"}),
+                                                        html.Div(
+                                                            [
+                                                                html.H2(name, style={"font-size":"1.6rem", "color":"#000", "padding-bottom":"32px", "padding-top":"16px"}),
+                                                                html.H6("DATE OF BIRTH", style={"font-size":"0.6rem"}),
+                                                                html.Div(dbc.Badge(str(dob), pill=True, style={"background":"#857698"}), style={"margin-top":"-10px", "padding-bottom":"16px"}),
+                                                                html.H6("AGE", style={"font-size":"0.6rem"}),
+                                                                html.Div(dbc.Badge(str(age), pill=True, style={"background":"#857698"}), style={"margin-top":"-10px", "padding-bottom":"16px"}),
+                                                                html.H6("GENDER", style={"font-size":"0.6rem"}),
+                                                                html.Div(dbc.Badge(str(gender), pill=True, style={"background":"#857698"}), style={"margin-top":"-10px", "padding-bottom":"16px"}),
+                                                            ]
+                                                        )
+                                                    ],
+                                                    style={"padding":"20px","text-align":"center"}
+                                                ),
+                                            ],
+                                            style={"width":"260px", "border-radius":"1rem","background":"#f5f5f5","margin-top":"60px","margin-left":"20px"}
+                                        ),
+                                        html.Div(
+                                            [
+                                                physician_assessment_item("07/03/2020", pid, itemid = 1)   
+                                            ],
+                                            style={"padding-left":"20px","margin-top":"60px"}
+                                        ),
                                     ],
-                                    style={"color":"#1357DD"}
+                                    style={"display":"flex", "padding-bottom":"60px"}
                                 )
-                            ),
-                            dbc.ModalBody(
-                                html.Div([
-                                    physician_assessment_item("07/03/2020", pid, itemid = 1)
-                                    ])
                             ),
                             dbc.ModalFooter(
                                 dbc.Button(
@@ -117,8 +144,8 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
             style={"padding-left":"5rem","padding-right":"7rem","padding-top":"0.5rem"}
         )
 
-def physician_assessment_item(Completion_date, pid, itemid):
-    cd = datetime.datetime.strptime(Completion_date, '%m/%d/%Y')
+def physician_assessment_item(completion_date, pid, itemid):
+    cd = datetime.datetime.strptime(completion_date, '%m/%d/%Y')
     rd = cd + datetime.timedelta(days = 7)
     rd = str(datetime.datetime.strftime(rd, '%m/%d/%Y'))
     return html.Div(
@@ -131,7 +158,7 @@ def physician_assessment_item(Completion_date, pid, itemid):
                                     html.H1("Berg Balance Scale", style={"font-size":"1.5rem"}),
                                     html.Div(
                                         [
-                                            dbc.Badge("Functional Assessment", color="info", style={"font-family":"NotoSans-Light","font-size":"0.8rem"}),
+                                            dbc.Badge("Functional Assessment", color="info", style={"font-family":"NotoSans-Light","font-size":"0.8rem",}),
                                             html.H6("Dr.Smith", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
                                             html.H6(" | "),
                                             html.H6("self-recording", style={"padding-left":"0.5rem","padding-right":"0.5rem"}),
@@ -139,31 +166,31 @@ def physician_assessment_item(Completion_date, pid, itemid):
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"width":"26rem"}
+                                style={"width":"26rem","padding-left":"10px"}
                             ),
                             html.Div(
                                 [
-                                    html.H6("Patient Completion Date", style={"font-size":"0.7rem"}),
-                                    html.H1(Completion_date, style={"font-size":"1.2rem"}, 
+                                    html.H6("Patient Completion Date", style={"font-size":"0.6rem","height":"1.5rem"}),
+                                    html.H1(completion_date, style={"font-size":"1.2rem","text-align":"center"}, 
 #                                        id = u'patient-assessment-completdate-{}'.format(num)
                                         )
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
                             html.Div(
                                 [
-                                    html.H6("Physician Review Due Date", style={"font-size":"0.7rem"}),
+                                    html.H6("Review Due Date", style={"font-size":"0.6rem","height":"1.5rem"}),
                                     html.H1(rd, style={"font-size":"1.2rem","color":"#dc3545"}, 
 #                                        id = u'patient-assessment-status-{}'.format(num)
                                         )
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}, 
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, 
                             ),
                             html.Div(
                                 [  
-                                    dbc.Button("Start Review", id = {"type": "physician-assessment-open-item", 'index': str(pid)+str(itemid)}),
+                                    dbc.Button("Start Review", id = {"type": "physician-assessment-open-item", 'index': str(pid)+str(itemid)}, outline=True, color="dark", style={"border-radius":"0.8rem","font-size":"0.8rem","font-family":"NotoSans-Regular"}),
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1.6rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
                         ],
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}

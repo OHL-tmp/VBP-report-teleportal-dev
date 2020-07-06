@@ -20,92 +20,10 @@ from kccq_questionnaire_answer import *
 
 from patient_page import *
 
-
-username = "demo"
-password = "demo2020"
 # app = dash.Dash(__name__, url_base_pathname='/physician/')
 # server = app.server
 
-def login_layout(app):
-    return html.Div(
-                [
-                    html.Div(
-                        [
-                            html.Div(
-                                html.Img(src=app.get_asset_url("coeus.png"),style={"height":"4rem"}),
-                                style={"text-align":"center","padding":"4rem"}
-                            ),
-                            html.Div(
-                                html.H2("Physician",style={"font-size":"1.6rem","padding-left":"20px"}),
-                                style={"text-align":"start"}
-                            ),
-                            html.Div(id = 'store-location'),
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [   
-                                        html.Div(style={"padding-top":"20px"}),
-                                        dbc.Collapse(children = ["\u2757", "Please check your username and password."],
-                                            id = 'login-collapse-check',
-                                            is_open = False,
-                                            style={"text-align":"center"}
-                                            ),
-                                        html.Div(
-                                            [
-                                                html.Form(
-                                                    [
-                                                        html.Div(
-                                                            dbc.Input(placeholder="Username", type="text", style={"border-radius":"10rem"}, id = "login-input-username"),
-                                                            style={"padding":"0.5rem"}
-                                                        ),
-                                                        html.Div(
-                                                            dbc.Input(placeholder="Password", style={"border-radius":"10rem"}, type = 'password', id = "login-input-password"),
-                                                            style={"padding":"0.5rem"}
-                                                        ),
-                                                        dbc.Row(
-                                                            [
-                                                                dbc.Col(
-                                                                    html.Div(),
-                                                                ),
-                                                                dbc.Col(
-                                                                    [
-                                                                        dbc.Button(
-                                                                            "Log In",
-                                                                            # id = 'manager-button-openmodal-pmpm',
-                                                                            className="mb-3",
-                                                                            style={"background-color":"#38160f", "border":"none", "border-radius":"10rem", "font-family":"NotoSans-Regular", "font-size":"1rem","width":"6rem"},
-                                                                            id = "login-button-submit"
-                                                                        ),
-                                                                    ],
-                                                                    width=3
-                                                                ),
-                                                                dbc.Col(
-                                                                    html.Div(),
-                                                                ),
-                                                            ],
-                                                            style={"padding-top":"2rem", "padding-right":"1rem"}
-                                                        )
-                                                    ], 
-                                                    action='/login', 
-                                                    method='post'
-                                                )
-                                            ]
-                                        )
-                                    ],
-                                    style={"padding-left":"2rem","padding-right":"2rem"}
-                                ),
-                                className="mb-3",
-                                style={"box-shadow":"0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1)", "border":"none", "border-radius":"1rem"}
-                            )
-                        ],
-                        style={"background-color":"transparent", "border":"none", "width":"500px", "margin":"auto", "padding-top":"5vh"}
-                    ),
-                ],
-                style={"background":"url(./assets/physician-login.png)","height":"100vh"},
-                id="login-layout"
-            )
-
-
-def physician_layout(app):
+def create_layout(app):
 	
 	return html.Div(
                 [
@@ -117,8 +35,7 @@ def physician_layout(app):
                         ],
                         style={"padding-top":"1rem","background-color":"#fff"}
                     )
-                ],
-                id="physician-layout"
+                ]
             )
 
 
@@ -127,13 +44,7 @@ def header(app):
     search_bar = dbc.Row(
         [
             dbc.Col(
-                dbc.Button(
-                    "Log Out", 
-                    outline=True, 
-                    color="dark", 
-                    style={"border-radius":"10rem", "width":"6rem","height":"2rem","font-size":"0.7rem"},
-                    id = "logout-button"
-                ),
+                dbc.Button("Log Out", outline=True, color="dark", style={"border-radius":"10rem", "width":"6rem","height":"2rem","font-size":"0.7rem"}),
                 width="auto",
             ),
         ],
@@ -356,63 +267,7 @@ def list_patients():
 
 
 
-app.layout = html.Div(
-        [
-            
-            login_layout(app),
-            
-            dbc.Fade(
-                physician_layout(app),
-                id="fade-transition",
-                is_in=True,
-                style={"transition": "opacity 100ms ease"},
-            ),
-        ]
-    )
-
-
-@app.callback(
-    [
-        Output("login-collapse-check", "is_open"),
-        Output("login-layout", "hidden"),
-        Output("physician-layout", "hidden"),
-    ],
-    [
-        Input("login-button-submit", "n_clicks"),
-        Input("logout-button", "n_clicks")
-    ],
-    [
-        State("login-input-username", "value"),
-        State("login-input-password", "value")
-    ]
-    )
-def login_check(nin, nout, un, pw):
-    ctx = dash.callback_context
-    if ctx.triggered[0]['prop_id'].split('.')[0] == 'login-button-submit':
-        if un == username and pw == password:
-            return False, True, False
-        else: 
-            return True, False, True
-    elif ctx.triggered[0]['prop_id'].split('.')[0] == 'logout-button':
-        return False, False, True
-    else:
-        return False, False, True
-
-
-# @app.callback(
-#     [
-#         Output("login-layout", "hidden"),
-#         Output("physician-layout", "hidden"),
-#     ],
-#     [
-#         Input("logout-button", "n_clicks")
-#     ]
-#     )
-# def login_check(n, un, pw):
-#     if n:
-#         return True, False
-
-
+layout = create_layout(app)
 
 @app.callback(
     Output("navbar-collapse", "is_open"),
