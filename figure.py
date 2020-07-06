@@ -8,16 +8,24 @@ Created on Mon Jul 6 11:01:53 2020
 import pandas as pd
 import plotly.graph_objects as go
 import dash_table
+from dash_table.Format import Format, Scheme
+import dash_table.FormatTemplate as FormatTemplate
 
-df_kccq_score=pd.read_csv("kccq_score.csv")
+df_kccq_score=pd.read_csv("data/kccq_score.csv")
 
 colors={'blue':'rgba(18,85,222,1)','yellow':'rgba(246,177,17,1)','transparent':'rgba(255,255,255,0)','grey':'rgba(191,191,191,1)',
        'lightblue':'rgba(143,170,220,1)'}
- 
+def data_process(df,current_score,submit_date):
+    df.iloc[:,[3]]= current_score
+    df=df.rename(columns={(df.columns[3]):submit_date+"(Current Assessment)"})    
+    df.iloc[:,[4]]=df.iloc[:,3]-df.iloc[:,1]
+    return df
+   
+
 def tbl(df):
     tbl=dash_table.DataTable(
         data=df.to_dict('records'),
-        columns=[{'id': c, 'name': c} for c in df.columns],
+        columns=[{'id': c, 'name': c,'type': 'numeric',"format":Format( precision=0,group=',', scheme=Scheme.fixed,),} for c in df.columns],
         style_data={
             'whiteSpace': 'normal',
             'height': 'auto'
@@ -109,7 +117,7 @@ def bargraph(df):
             ticks='inside'
         ),
 
-        #hovermode=True,
+#        hovermode=False,
         modebar=dict(
             bgcolor=colors['transparent']
         ),
