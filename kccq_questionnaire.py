@@ -124,12 +124,12 @@ def modal_kccq_questionaire_body():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1},
-                                                            {"label": "", "value" : 2},
-                                                            {"label": "", "value" : 3},
-                                                            {"label": "", "value" : 4},
-                                                            {"label": "", "value" : 5},
-                                                            {"label": "", "value" : 6},
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 50},
                                                             ],
                                                         id = "kccq-modal-radio-q1a",
                                                         inline = True,
@@ -146,12 +146,12 @@ def modal_kccq_questionaire_body():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1},
-                                                            {"label": "", "value" : 2},
-                                                            {"label": "", "value" : 3},
-                                                            {"label": "", "value" : 4},
-                                                            {"label": "", "value" : 5},
-                                                            {"label": "", "value" : 6},
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 50},
                                                             ],
                                                         id = "kccq-modal-radio-q1b",
                                                         inline = True,
@@ -168,12 +168,12 @@ def modal_kccq_questionaire_body():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1},
-                                                            {"label": "", "value" : 2},
-                                                            {"label": "", "value" : 3},
-                                                            {"label": "", "value" : 4},
-                                                            {"label": "", "value" : 5},
-                                                            {"label": "", "value" : 6},
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 50},
                                                             ],
                                                         id = "kccq-modal-radio-q1c",
                                                         inline = True,
@@ -193,7 +193,96 @@ def modal_kccq_questionaire_body():
                     question_group(q5[0], q5[1], "kccq-modal-radio-q5"),
                     question_group(q6[0], q6[1], "kccq-modal-radio-q6"),
                     question_group(q7[0], q7[1], "kccq-modal-radio-q7"),
-
+                    html.Div(
+                        [
+                            html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
+                            html.Div(
+                                [
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(width = 2),
+                                                dbc.Col("Severely Limited"),
+                                                dbc.Col("Limited quite a bit"),
+                                                dbc.Col("Moderately Limited"),
+                                                dbc.Col("Slightly Limited"),
+                                                dbc.Col("Did not limit at all"),
+                                                dbc.Col("Does not apply or did not do for other reasons"),
+                                            ],
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("a. Hobbies, recreational activities", width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 70},
+                                                            ],
+                                                        id = "kccq-modal-radio-q8a",
+                                                        inline = True,
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("b. Working or doing household chores",width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 70},
+                                                            ],
+                                                        id = "kccq-modal-radio-q8b",
+                                                        inline = True,
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                    html.Div(
+                                        dbc.Row(
+                                            [
+                                                dbc.Col("c. Visiting family or friends out of your home",width = 2),
+                                                dbc.Col(
+                                                    dbc.RadioItems(
+                                                        options = [
+                                                            {"label": "", "value" : 20},
+                                                            {"label": "", "value" : 40},
+                                                            {"label": "", "value" : 60},
+                                                            {"label": "", "value" : 80},
+                                                            {"label": "", "value" : 100},
+                                                            {"label": "", "value" : 70},
+                                                            ],
+                                                        id = "kccq-modal-radio-q8c",
+                                                        inline = True,
+                                                        
+                                                        style = {"display" : "flex", "justify-content" : "space-around"} ),
+                                                    
+                                                    ),
+                                            ]
+                                        )
+                                    ),
+                                ]
+                            )
+                        ]
+                    ),
                     
 
                     html.Div(id = "kccq-modal-tempdata", style = {"display":"none"})

@@ -574,6 +574,9 @@ def open_modal(n1, n2, is_open):
     Output("kccq-modal-answer-radio-q5", "value"),
     Output("kccq-modal-answer-radio-q6", "value"),
     Output("kccq-modal-answer-radio-q7", "value"),
+    Output("kccq-modal-answer-radio-q8a", "value"),
+    Output("kccq-modal-answer-radio-q8b", "value"),
+    Output("kccq-modal-answer-radio-q8c", "value"),
     Output("kccq-modal-answer-header", "children")],
     [Input("kccq-modal-tempdata", "children"),
     Input("kccq-modal-answer-button-open", "n_clicks")]
@@ -583,8 +586,8 @@ def store_questionaire_answer(data, n):
         answer = json.loads(data)
         header = html.Div([html.H4("KCCQ Questionnaire --" + answer["answer-date"] + " Completed"),
                         html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.") ])
-        return answer["q1a"],answer["q1b"],answer["q1c"],answer["q2"],answer["q3"],answer["q4"],answer["q5"],answer["q6"],answer["q7"], header
-    return "","","","","","","","","",""
+        return answer["q1a"],answer["q1b"],answer["q1c"],answer["q2"],answer["q3"],answer["q4"],answer["q5"],answer["q6"],answer["q7"],answer["q8a"],answer["q8b"],answer["q8c"], header
+    return "","","","","","","","","","","","",""
 
 @app.callback(
     Output("kccq-modal-answer", 'is_open'),

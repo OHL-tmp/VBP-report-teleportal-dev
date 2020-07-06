@@ -119,12 +119,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 50, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q1a",
                                                         inline = True,
@@ -141,12 +141,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 50, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q1b",
                                                         inline = True,
@@ -163,12 +163,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 50, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q1c",
                                                         inline = True,
@@ -215,12 +215,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 70, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q8a",
                                                         inline = True,
@@ -237,12 +237,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 70, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q8b",
                                                         inline = True,
@@ -259,12 +259,12 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
-                                                            {"label": "", "value" : 1, "disabled" : True},
-                                                            {"label": "", "value" : 2, "disabled" : True},
-                                                            {"label": "", "value" : 3, "disabled" : True},
-                                                            {"label": "", "value" : 4, "disabled" : True},
-                                                            {"label": "", "value" : 5, "disabled" : True},
-                                                            {"label": "", "value" : 6, "disabled" : True},
+                                                            {"label": "", "value" : 20, "disabled" : True},
+                                                            {"label": "", "value" : 40, "disabled" : True},
+                                                            {"label": "", "value" : 60, "disabled" : True},
+                                                            {"label": "", "value" : 80, "disabled" : True},
+                                                            {"label": "", "value" : 100, "disabled" : True},
+                                                            {"label": "", "value" : 70, "disabled" : True},
                                                             ],
                                                         id = "kccq-modal-answer-radio-q8c",
                                                         inline = True,
