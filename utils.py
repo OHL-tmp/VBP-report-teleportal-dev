@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 
 username = "demo-patient"
+patient_name = "demo-patient"
 
 def Header_mgmt(app, dashboard_active, drilldown_active, report_active, Homepage_active):
     return html.Div([get_header_mgmt(app, dashboard_active, drilldown_active, report_active, Homepage_active)])

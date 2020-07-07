@@ -21,7 +21,7 @@ from kccq_questionnaire_answer import *
 from patient_page import *
 
 
-username = "demo"
+username = "demo-patient"
 password = "demo2020"
 # app = dash.Dash(__name__, url_base_pathname='/physician/')
 # server = app.server

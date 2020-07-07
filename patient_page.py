@@ -125,7 +125,18 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                         ),
                                         html.Div(
                                             [
-                                                physician_assessment_item("07/03/2020", pid, itemid = 1)   
+                                            html.Div([
+                                                html.H6("Sort By"),
+                                                dbc.Select(
+                                                id = {'type':'physician-modal-select-sorting', 'index':pid},
+                                                options = [
+                                                    {"label":"Category", "value":0},
+                                                    {"label":"Patient Completion Date", "value":3},
+                                                ],
+                                                value = 0,
+                                                bs_size = 'sm',
+                                                )]),
+                                            html.Div([],id = {'type':'physician-modal-patient-modalbody', 'index':pid}),    
                                             ],
                                             style={"padding-left":"20px","margin-top":"60px"}
                                         ),
@@ -134,22 +145,22 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                 )
                             ),
 
-                            dbc.ModalBody([
-                                html.Div([
-                                    html.H6("Sort By"),
-                                    dbc.Select(
-                                    id = {'type':'physician-modal-select-sorting', 'index':pid},
-                                    options = [
-                                        {"label":"Category", "value":0},
-                                        {"label":"Patient Completion Date", "value":3},
-                                    ],
-                                    value = 0,
-                                    bs_size = 'sm',
-                                    )]),
-                                html.Div([
-#                                   physician_assessment_item("Functional Assessment","Berg Balance Scale","Self Recording",str(datetime.datetime.now().date().strftime('%m/%d/%Y')), "Start Review", pid,1)
-                                    ],id = {'type':'physician-modal-patient-modalbody', 'index':pid}),
-                            ]),
+#                             dbc.ModalBody([
+#                                 html.Div([
+#                                     html.H6("Sort By"),
+#                                     dbc.Select(
+#                                     id = {'type':'physician-modal-select-sorting', 'index':pid},
+#                                     options = [
+#                                         {"label":"Category", "value":0},
+#                                         {"label":"Patient Completion Date", "value":3},
+#                                     ],
+#                                     value = 0,
+#                                     bs_size = 'sm',
+#                                     )]),
+#                                 html.Div([
+# #                                   physician_assessment_item("Functional Assessment","Berg Balance Scale","Self Recording",str(datetime.datetime.now().date().strftime('%m/%d/%Y')), "Start Review", pid,1)
+#                                     ],id = {'type':'physician-modal-patient-modalbody', 'index':pid}),
+#                             ]),
                             dbc.ModalFooter(
                                 dbc.Button(
                                     "CLOSE", id={"type": "physician-close-patient", 'index': pid}, className="ml-auto",
@@ -195,7 +206,7 @@ def physician_assessment_item(category,assessment,assessment_type,Completion_dat
                             html.Div(
                                 [
                                     html.H6("Patient Completion Date", style={"font-size":"0.6rem","height":"1.5rem"}),
-                                    html.H1(completion_date, style={"font-size":"1.2rem","text-align":"center"}, 
+                                    html.H1(Completion_date, style={"font-size":"1.2rem","text-align":"center"}, 
 #                                        id = u'patient-assessment-completdate-{}'.format(num)
                                         )
                                 ],
@@ -234,7 +245,7 @@ def patient_collapse_item(assessment_type, Completion_date, result):
     cd = datetime.datetime.strptime(Completion_date, '%m/%d/%Y')
     submit_date = str(cd.date())
     if assessment_type == "Self Recording":
-        path = str('configure/') + username +str('/upload/') + submit_date + str('_')
+        path = str('configure/') + patient_name +str('/upload/') + submit_date + str('_')
         file = glob.glob(path +'*.*')[0].replace('\\','/')
         encoded_video = base64.b64encode(open(file, 'rb').read())
         review_video = html.Div([
@@ -259,7 +270,7 @@ def patient_collapse_item(assessment_type, Completion_date, result):
             dbc.Row(["Physician Assessment:"])
             ])
     else:
-        file = str('configure/') + username +str('/kccq_questionarie_' + submit_date + '.json')
+        file = str('configure/') + patient_name +str('/kccq_questionarie_' + submit_date + '.json')
         answer = json.load(open(file), encoding = 'utf-8')
         pl_score, sf_score, ql_score, sl_score, all_score = cal_kccq_score(answer)
         current_score = [pl_score, sf_score, ql_score, sl_score, all_score]

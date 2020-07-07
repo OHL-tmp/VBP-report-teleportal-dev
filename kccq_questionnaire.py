@@ -29,7 +29,8 @@ q2=["2. Over the past 2 weeks, how many times did you have swelling in your fee
 "3 or more times per week but not every day",
 "1-2 times per week",
 "Less than once a week",
-"Never over the past 2 weeks"]]
+"Never over the past 2 weeks"],
+[20,40,60,80,100], 'SF']
 
 q3=["3. Over the past 2 weeks, on average, how many times has fatigue limited your ability to do what you wanted?",
 ["All of  the time",
@@ -38,7 +39,8 @@ q3=["3. Over the past 2 weeks, on average, how many times has fatigue limited y
 "3 or more times per week but not every day",
 "1-2 times per week",
 "Less than once a week",
-"Never over the  past 2 weeks"]]
+"Never over the  past 2 weeks"],
+[15,30,45,60,75,90,100], 'SF']
 
 q4=["4. Over the past 2 weeks, on average, how many times has shortness of breath limited your ability to do what you wanted?",
 ["All of  the time",
@@ -47,27 +49,32 @@ q4=["4. Over the past 2 weeks, on average, how many times has shortness of brea
 "3 or more times per week but not every day",
 "1-2 times per week",
 "Less than once a week",
-"Never over the  past 2 weeks"]]
+"Never over the  past 2 weeks"],
+[15,30,45,60,75,90,100], 'SF']
 
 q5=["5. Over the past 2 weeks, on average, how many times have you been forced to sleep sitting up in a chair or with at least 3 pillows to prop you up because of shortness of breath?",
 ["Every night",
 "3 or more times per week but not every day",
 "1-2 times per week",
 "Less than once a week",
-"Never over the  past 2 weeks"]]
+"Never over the  past 2 weeks"],
+[30,40,60,80,100], "SF"]
+
 q6=["6. Over the past 2 weeks, how much has your heart failure limited your enjoyment of life?",
 ["It has extremely  limited my enjoyment of life",
 "It has limited my enjoyment of life quite a bit",
 "It has moderately  limited my enjoyment of life",
 "It has slightly  limited my enjoyment of life",
-"It has not limited  my enjoyment of life at all",]]
+"It has not limited  my enjoyment of life at all",],
+[20,40,60,80,100], "QL"]
 
 q7=["7. If you had to spend the rest of your life with your heart failure the way it is right now, how would you feel about this?",
 ["Not at all satisfied",
 "Mostly dissatisfied",
 "Somewhat satisfied",
 "Mostly satisfied",
-"Completely satisfied",]]
+"Completely satisfied",],
+[20,40,60,80,100], "QL"]
 
 def modal_kccq_questionaire(app):
     return html.Div(
@@ -187,12 +194,12 @@ def modal_kccq_questionaire_body():
                             )
                         ]
                     ),
-                    question_group(q2[0], q2[1], "kccq-modal-radio-q2"),
-                    question_group(q3[0], q3[1], "kccq-modal-radio-q3"),
-                    question_group(q4[0], q4[1], "kccq-modal-radio-q4"),
-                    question_group(q5[0], q5[1], "kccq-modal-radio-q5"),
-                    question_group(q6[0], q6[1], "kccq-modal-radio-q6"),
-                    question_group(q7[0], q7[1], "kccq-modal-radio-q7"),
+                    question_group(q2[0], q2[1], q2[2], "kccq-modal-radio-q2"),
+                    question_group(q3[0], q3[1], q3[2], "kccq-modal-radio-q3"),
+                    question_group(q4[0], q4[1], q4[2], "kccq-modal-radio-q4"),
+                    question_group(q5[0], q5[1], q5[2], "kccq-modal-radio-q5"),
+                    question_group(q6[0], q6[1], q6[2], "kccq-modal-radio-q6"),
+                    question_group(q7[0], q7[1], q7[2], "kccq-modal-radio-q7"),
                     html.Div(
                         [
                             html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
@@ -291,12 +298,12 @@ def modal_kccq_questionaire_body():
             )
 
 
-def question_group(label, value_list, id):
+def question_group(label, value_list, value, id):
     value_list_len = len(value_list)
 
     options = []
     for i in range(value_list_len):
-        options.append({"label":value_list[i], "value":i+1})
+        options.append({"label":value_list[i], "value":value[i]})
 
     return html.Div(
             [

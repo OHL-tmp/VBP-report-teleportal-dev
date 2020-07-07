@@ -30,10 +30,10 @@ app = dash.Dash(__name__, url_base_pathname='/login/')
 
 server = app.server
 
-global username
+global username, patient_name
 
-
-username = "demo"
+patient_name = "demo-patient"
+username = "demo-patient"
 password = "demo2020"
 
 
@@ -420,8 +420,8 @@ def tab_pa_content(app):
 
                 html.Div(
                     [
-                         tab_assessment_item1(app, 2, "", modal_self_recording_review_prior(app, "2020-04-01_sample_video.mp4", 2), True, "04/01/2020"),
-                         tab_assessment_item1(app, 3, "", modal_self_recording_review_prior(app, "2020-01-01_sample_video.mp4", 3), True, "01/01/2020"),
+                         tab_assessment_item1(app, 2, "", modal_self_recording_review_prior(app, "2020-04-01_sample_video.mp4","50", 2), True, "04/01/2020"),
+                         tab_assessment_item1(app, 3, "", modal_self_recording_review_prior(app, "2020-01-01_sample_video.mp4","45", 3), True, "01/01/2020"),
                          tab_assessment_item2(app, 2, "", modal_kccq_questionaire_answer_prior(app, "kccq_questionarie_2020-04-15.json", 2), True, "04/15/2020"),
                          tab_assessment_item2(app, 3, "", modal_kccq_questionaire_answer_prior(app, "kccq_questionarie_2020-01-15.json", 3), True, "01/15/2020"),
                         # tab_assessment_item2(app),
@@ -543,9 +543,9 @@ def store_questionaire_answer(n, q1a, q1b, q1c, q2, q3, q4, q5, q6, q7, q8a, q8b
                 "q6" : q6,
                 "q7" : q7,
                 "q8a" : q8a, "q8b" : q8b, "q8c" : q8c}
-    path = str('configure/') + username +str('/kccq_questionarie_') + submit_date + str('.json')
-    if not os.path.exists(str('configure/') + username +str('/')):
-        os.makedirs(str('configure/') + username +str('/'))
+    path = str('configure/') + patient_name +str('/kccq_questionarie_') + submit_date + str('.json')
+    if not os.path.exists(str('configure/') + patient_name +str('/')):
+        os.makedirs(str('configure/') + patient_name +str('/'))
     with open(path,'w') as outfile:
         json.dump(answer, outfile)
     return json.dumps(answer)
@@ -647,9 +647,9 @@ def upload_video(filename, contents, last_modified):
         d = datetime.datetime.now().strftime('%m/%d/%Y')
 
         filename = filename.replace(" ",'_')    
-        path = str('configure/') + username +str('/upload/') + submit_date + str('_') + filename
-        if not os.path.exists(str('configure/') + username +str('/upload/')):
-            os.makedirs(str('configure/') + username +str('/upload/'))
+        path = str('configure/') + patient_name +str('/upload/') + submit_date + str('_') + filename
+        if not os.path.exists(str('configure/') + patient_name +str('/upload/')):
+            os.makedirs(str('configure/') + patient_name +str('/upload/'))
         with open(path, "wb") as file:
             file.write(decoded)
 
@@ -726,4 +726,4 @@ for n in range(2,4):
 
 
 if __name__ == "__main__":
-    app.run_server(host="127.0.0.1",debug=True,port=8052)
+    app.run_server(host="127.0.0.1",debug=True,port=8051)

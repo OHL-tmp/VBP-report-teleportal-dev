@@ -21,7 +21,7 @@ from utils import *
 from app import app
 
 
-def modal_self_recording_review_prior(app, filename, num):
+def modal_self_recording_review_prior(app, filename, score, num):
 	submit_date = filename.split('_')[0]
 	d = submit_date.split('-')[1]+'/'+submit_date.split('-')[2]+'/'+submit_date.split('-')[0]
 	path = str('configure/') + username +str('/upload/') + filename
@@ -43,7 +43,11 @@ def modal_self_recording_review_prior(app, filename, num):
 			dbc.ModalHeader(
 				html.Div([
 					html.H4("Berg Balance Scale -- " + d + " Completed"),
-					html.H5(filename + ' | ' + str(duration) + 's | ' + str(size) + 'MB ')
+					dbc.Row([
+						dbc.Col(html.H5(filename + ' | ' + str(duration) + 's | ' + str(size) + 'MB '),),
+						dbc.Col(html.H5("Total Score: " + score + "/56")),
+						])
+					
 			])),
 			dbc.ModalBody(
 				html.Div([
