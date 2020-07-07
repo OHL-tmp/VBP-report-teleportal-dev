@@ -85,7 +85,7 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                         width=2
                                     ),
                                 ],
-                                style={"width":"80rem","margin-top":"0.5rem"}
+                                style={"width":"100%","margin-top":"0.5rem","padding-left":"0.5rem","padding-right":"0.5rem"}
                             )
                         ],
                         style={"display":"flex"}

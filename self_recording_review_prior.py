@@ -36,28 +36,60 @@ def modal_self_recording_review_prior(app, filename, score, num):
 	size = round(os.path.getsize(path)/(1024*1024),1)
 
 	return html.Div(
-		[
-		dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'video-modal-review-prior-button-open-{}'.format(num)),
-		dbc.Modal(
-			[
-			dbc.ModalHeader(
-				html.Div([
-					html.H4("Berg Balance Scale -- " + d + " Completed"),
-					dbc.Row([
-						dbc.Col(html.H5(filename + ' | ' + str(duration) + 's | ' + str(size) + 'MB '),),
-						dbc.Col(html.H5("Total Score: " + score + "/56")),
-						])
-					
-			])),
-			dbc.ModalBody(
-				html.Div([
-				html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"30rem","border-bottom":"none", "text-align":"center"} ),
-				])),
-			dbc.ModalFooter(
-				dbc.Button("close", id=u"video-modal-review-prior-button-submit-{}".format(num), className="mr-2"),
-				)],
-			id = u"modal-selfrecording-review-prior-{}".format(num),
-			size = 'xl',
-			backdrop = "static"
-			)]
-		)
+				[
+					html.H6("Review", style={"font-size":"0.7rem","padding-top":"10px"}),
+					dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"1.5rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'video-modal-review-prior-button-open-{}'.format(num)),
+					dbc.Modal(
+						[
+							dbc.ModalHeader(
+								html.Div(
+									[
+										html.H1("Berg Balance Scale",style={"font-size":"1.5rem"}),
+										dbc.Badge(d + " Completed", color="primary", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"1rem"}),
+										html.Div(style={"height":"20px"}),
+										dbc.Row(
+											[
+												dbc.Col(
+													[
+														html.H6("File Name : "+ filename),
+														html.H6("Duration : "+ str(duration)+' s'),
+														html.H6("Size : "+ str(size)+' MB'),
+													]
+												),
+												dbc.Col(
+													html.Div(
+														[
+															dbc.Badge("Total Score: ", color="warning", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"0.8rem"}),
+															html.H1(score + "/56", style={"font-size":"2rem","color":"#ffc107"}),
+														]
+													)
+													
+												),
+											],
+											style={"width":"1600px"}
+										)
+									],
+                            		style={"padding-left":"40px","padding-right":"40px","padding-top":"10px","padding-bottom":"10px"}
+								)
+							),
+							dbc.ModalBody(
+								html.Div(
+									[
+										html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"25rem","border-bottom":"none", "text-align":"center"} ),
+									],
+									style={"text-align":"center"}
+								)
+							),
+							dbc.ModalFooter(
+								dbc.Button("close", id=u"video-modal-review-prior-button-submit-{}".format(num), className="mr-2"),
+							)
+						],
+						id = u"modal-selfrecording-review-prior-{}".format(num),
+						size = 'xl',
+						backdrop = "static"
+					)
+				]
+			)
+
+
+

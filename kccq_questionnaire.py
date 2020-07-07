@@ -79,18 +79,27 @@ q7=["7. If you had to spend the rest of your life with your heart failure the wa
 def modal_kccq_questionaire(app):
     return html.Div(
             [
-                html.H6("Entry", style={"font-size":"0.7rem"}),
-                dbc.Button(children = [html.Img(src=app.get_asset_url("icon-test-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-button-open'),
+                html.H6("Entry", style={"font-size":"0.7rem","padding-top":"10px"}),
+                dbc.Button(children = [html.Img(src=app.get_asset_url("icon-test-100.png"), style={"height":"1.5rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-button-open'),
                 dbc.Modal(
                     [
-                        dbc.ModalHeader(html.Div([
-                                    html.H4("KCCQ-12 Questionnaire"),
-                                    html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.")]
-                                ),),
-                        dbc.ModalBody(modal_kccq_questionaire_body()),
+                        dbc.ModalHeader(
+                            html.Div(
+                                [
+                                    html.H1("KCCQ-12 Questionnaire",style={"font-size":"1.6rem"}),
+                                    html.H6("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you."),
+                                ],
+                                style={"width":"80%","padding-left":"40px","padding-right":"40px","padding-top":"10px","padding-bottom":"10px"}
+                            ),
+                        ),
+                        dbc.ModalBody(
+                            modal_kccq_questionaire_body(),
+                            style={"padding":"40px","margin-top":"-20px"}
+                        ),
                         dbc.ModalFooter(
-                            dbc.Button("Submit", id="kccq-modal-button-submit", className="mr-2"),
-                            )
+                            dbc.Button("Submit", id="kccq-modal-button-submit", className="mr-2",style={"width":"160px"}),
+                            style={"padding-right":"42%"}
+                        )
                     ],
                     id = "kccq-modal",
                     size = 'xl',
@@ -104,16 +113,18 @@ def modal_kccq_questionaire_body():
 	
 	return html.Div(
                 [
-                    
                     html.Div(
                         [
-                            html.H6("1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col(width = 2),
+                                                dbc.Col(width = 3),
                                                 dbc.Col("Extremely Limited"),
                                                 dbc.Col("Quite a bit Limited"),
                                                 dbc.Col("Moderately Limited"),
@@ -121,13 +132,14 @@ def modal_kccq_questionaire_body():
                                                 dbc.Col("Not at all Limited"),
                                                 dbc.Col("Limited for other reasons or did not do the activity"),
                                             ],
-                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center","font-family":"NotoSans-SemiBold"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("a. Showering/bathing", width = 2),
+                                                dbc.Col("a. Showering/bathing", width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -146,10 +158,11 @@ def modal_kccq_questionaire_body():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("b. Walking 1 block on level ground",width = 2),
+                                                dbc.Col("b. Walking 1 block on level ground",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -168,10 +181,11 @@ def modal_kccq_questionaire_body():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("c. Hurrying or jogging (as if to catch a bus)",width = 2),
+                                                dbc.Col("c. Hurrying or jogging (as if to catch a bus)",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -190,9 +204,11 @@ def modal_kccq_questionaire_body():
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                     question_group(q2[0], q2[1], q2[2], "kccq-modal-radio-q2"),
                     question_group(q3[0], q3[1], q3[2], "kccq-modal-radio-q3"),
@@ -202,13 +218,16 @@ def modal_kccq_questionaire_body():
                     question_group(q7[0], q7[1], q7[2], "kccq-modal-radio-q7"),
                     html.Div(
                         [
-                            html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col(width = 2),
+                                                dbc.Col(width = 3),
                                                 dbc.Col("Severely Limited"),
                                                 dbc.Col("Limited quite a bit"),
                                                 dbc.Col("Moderately Limited"),
@@ -216,13 +235,14 @@ def modal_kccq_questionaire_body():
                                                 dbc.Col("Did not limit at all"),
                                                 dbc.Col("Does not apply or did not do for other reasons"),
                                             ],
-                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center","font-family":"NotoSans-SemiBold"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("a. Hobbies, recreational activities", width = 2),
+                                                dbc.Col("a. Hobbies, recreational activities", width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -241,10 +261,11 @@ def modal_kccq_questionaire_body():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("b. Working or doing household chores",width = 2),
+                                                dbc.Col("b. Working or doing household chores",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -263,10 +284,11 @@ def modal_kccq_questionaire_body():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("c. Visiting family or friends out of your home",width = 2),
+                                                dbc.Col("c. Visiting family or friends out of your home",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -279,16 +301,17 @@ def modal_kccq_questionaire_body():
                                                             ],
                                                         id = "kccq-modal-radio-q8c",
                                                         inline = True,
-                                                        
                                                         style = {"display" : "flex", "justify-content" : "space-around"} ),
                                                     
                                                     ),
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                     
 
@@ -309,12 +332,14 @@ def question_group(label, value_list, value, id):
             [
                 dbc.FormGroup(
                     [
-                        dbc.Label(label),
+                        dbc.Label(label,style={"padding-top":"10px","padding-bottom":"10px"}),
                         dbc.RadioItems(
                             options=options,
                             id=id,
+                            style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                         ),
-                    ]
+                    ],
+                    style={"padding":"20px"}
                 )
             ]
         )

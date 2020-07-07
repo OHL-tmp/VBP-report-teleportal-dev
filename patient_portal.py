@@ -221,7 +221,7 @@ def tab_ca_content(app):
                                 ],
                                 style={"border-radius":"0.8rem", "border":"1px solid #1357dd","padding":"0.5rem"}
                             ),
-                            style={"padding":"1rem"}
+                            style={"padding":"1rem","background":"#fff"}
                         ),
                         html.Div(
                             html.Div(
@@ -231,11 +231,11 @@ def tab_ca_content(app):
                                 ],
                                 style={"border-radius":"0.8rem", "border":"1px solid #dc3545","padding":"0.5rem"}
                             ),
-                            style={"padding":"1rem"}
+                            style={"padding":"1rem","background":"#fff"}
                         ),
                         
                     ], 
-                    style={"margin-left":"0.38rem","width":"8rem","border-right":"1px solid #d5d5d5"}),
+                    style={"margin-left":"0.38rem","width":"8rem","padding-top":"4rem","background":"#f5f5f5"}),
 
                 html.Div(
                     [
@@ -275,25 +275,25 @@ def tab_assessment_item1(app, num, upload_func, review_func, hidden_status = Fal
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"width":"26rem"}
+                                style={"width":"26rem","padding-left":"16px"}
                             ),
                             html.Div(
                                 [
-                                    html.H6("Due Date", style={"font-size":"0.7rem"}),
+                                    html.H6("Due Date", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
-                                    html.H6("Status", style={"font-size":"0.7rem"}),
+                                    html.H6("Status", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-assessment-status-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
-                                    html.H6("Completion Date", style={"font-size":"0.7rem"}),
+                                    html.H6("Completion Date", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-assessment-completdate-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
@@ -337,25 +337,25 @@ def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func
                                         style={"display":"flex","font-size":"0.8rem"}
                                     ),
                                 ],
-                                style={"width":"26rem"}
+                                style={"width":"26rem","padding-left":"16px"}
                             ),
                             html.Div(
                                 [
-                                    html.H6("Due Date", style={"font-size":"0.7rem"}),
+                                    html.H6("Due Date", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1("07/31/2020", style={"font-size":"1.2rem"})
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
-                                    html.H6("Status", style={"font-size":"0.7rem"}),
+                                    html.H6("Status", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1("Not Started", style={"font-size":"1.2rem","color":"#dc3545"}, id = u'patient-questionnaire-status-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}, hidden = hidden_status
                             ),
                             html.Div(
                                 [
-                                    html.H6("Completion Date", style={"font-size":"0.7rem"}),
+                                    html.H6("Completion Date", style={"font-size":"0.7rem","padding-top":"10px"}),
                                     html.H1(Completion_date, style={"font-size":"1.2rem"}, id = u'patient-questionnaire-completdate-{}'.format(num))
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
@@ -383,40 +383,6 @@ def tab_assessment_item2(app, num, questionnaire_func, questionnaire_answer_func
 def tab_pa_content(app):
     return html.Div(
             [
-                # html.Div(
-                #     [
-                #         html.Div(
-                #             html.Div(
-                #                 [
-                #                     html.H6("TOTAL TASKS", style={"color":"#1357dd","width":"3rem"}),
-                #                     dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#1357dd"}),
-                #                 ],
-                #                 style={"border-radius":"0.8rem", "border":"1px solid #1357dd","padding":"0.5rem"}
-                #             ),
-                #             style={"padding":"1rem"}
-                #         ),
-                #         html.Div(
-                #             html.Div(
-                #                 [
-                #                     html.H6("ACTIVE TASKS", style={"color":"#dc3545","width":"3rem"}),
-                #                     dbc.Badge("2", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#dc3545"}),
-                #                 ],
-                #                 style={"border-radius":"0.8rem", "border":"1px solid #dc3545","padding":"0.5rem"}
-                #             ),
-                #             style={"padding":"1rem"}
-                #         ),
-                #         html.Div(
-                #             html.Div(
-                #                 [
-                #                     html.H6("INCOMING TASKS", style={"color":"#6c757d","width":"4.5rem"}),
-                #                     dbc.Badge("0", style={"font-family":"NotoSans-SemiBold","font-size":"1.2rem","border-radius":"10rem","width":"4.5rem","background-color":"#6c757d"}),
-                #                 ],
-                #                 style={"border-radius":"0.8rem", "border":"1px solid #6c757d","padding":"0.5rem"}
-                #             ),
-                #             style={"padding":"1rem"}
-                #         ),
-                #     ], 
-                #     style={"width":"8rem"}),
 
                 html.Div(
                     [
@@ -584,8 +550,18 @@ def open_modal(n1, n2, is_open):
 def store_questionaire_answer(data, n):
     if n:
         answer = json.loads(data)
-        header = html.Div([html.H4("KCCQ Questionnaire --" + answer["answer-date"] + " Completed"),
-                        html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.") ])
+        header = html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.H1("KCCQ Questionnaire", style={"font-size":"1.6rem","padding-right":"30px"}),
+                                dbc.Badge(answer["answer-date"] + " Completed", color="primary", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"1rem"}),
+                            ]
+                        ),
+                        html.H6("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.")
+                    ],
+                    style={"width":"80%","padding-left":"40px","padding-right":"40px","padding-top":"10px","padding-bottom":"10px"}
+                )
         return answer["q1a"],answer["q1b"],answer["q1c"],answer["q2"],answer["q3"],answer["q4"],answer["q5"],answer["q6"],answer["q7"],answer["q8a"],answer["q8b"],answer["q8c"], header
     return "","","","","","","","","","","","",""
 

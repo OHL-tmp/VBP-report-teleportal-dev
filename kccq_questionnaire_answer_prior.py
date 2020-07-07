@@ -80,21 +80,38 @@ def modal_kccq_questionaire_answer_prior(app, filename, num):
     path = 'configure/' + username + '/' + filename
     answer = json.load(open(path, encoding = 'utf-8'))
     return html.Div(
-        [
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'kccq-modal-answer-prior-button-open-{}'.format(num)),
-        dbc.Modal(
             [
-            dbc.ModalHeader(html.Div([
-                        html.H4("KCCQ Questionnaire -- " + answer["answer-date"] + " Completed"),
-                        html.H5("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.") ])),
-            dbc.ModalBody(modal_kccq_questionaire_body_answer_prior(answer, num)),
-            dbc.ModalFooter(
-                dbc.Button("Close", id=u"kccq-modal-answer-prior-button-submit-{}".format(num), className="mr-2"),
-                )],
-            id = u"kccq-modal-answer-prior-{}".format(num),
-            size = 'xl',
-            backdrop = "static"
-            )]
+                html.H6("Review", style={"font-size":"0.7rem","padding-top":"10px"}),
+                dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"1.5rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = u'kccq-modal-answer-prior-button-open-{}'.format(num)),
+                dbc.Modal(
+                    [
+                        dbc.ModalHeader(
+                            html.Div(
+                                [
+                                    html.Div(
+                                        [
+                                            html.H1("KCCQ Questionnaire", style={"font-size":"1.6rem","padding-right":"30px"}),
+                                            dbc.Badge(answer["answer-date"] + " Completed", color="primary", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"1rem"}),
+                                        ]
+                                    ),
+                                    html.H6("Instructions: The following questions refer to your heart failure and how it may affect your life. Please read and complete the following questions. There are no right or wrong answers. Please mark the answer that best applies to you.")
+                                ],
+                                style={"width":"80%","padding-left":"40px","padding-right":"40px","padding-top":"10px","padding-bottom":"10px"}
+                            )
+                        ),
+                        dbc.ModalBody(
+                            modal_kccq_questionaire_body_answer_prior(answer, num),
+                            style={"padding":"40px","margin-top":"-20px"}
+                        ),
+                        dbc.ModalFooter(
+                            dbc.Button("Close", id=u"kccq-modal-answer-prior-button-submit-{}".format(num), className="mr-2"),
+                        )
+                    ],
+                    id = u"kccq-modal-answer-prior-{}".format(num),
+                    size = 'xl',
+                    backdrop = "static"
+                )
+            ]
         )
 
 def modal_kccq_questionaire_body_answer_prior( answer, num=1):
@@ -104,7 +121,10 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                     
                     html.Div(
                         [
-                            html.H6("1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
@@ -121,6 +141,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -143,6 +164,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -165,6 +187,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -188,9 +211,11 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                     question_group_answer_prior(q2[0], q2[1], q2[2], "q2", answer),
                     question_group_answer_prior(q3[0], q3[1], q3[2], "q3", answer),
@@ -200,7 +225,10 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                     question_group_answer_prior(q7[0], q7[1], q7[2], "q7", answer),
                     html.Div(
                         [
-                            html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
@@ -217,6 +245,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -239,6 +268,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -261,6 +291,7 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
@@ -284,9 +315,11 @@ def modal_kccq_questionaire_body_answer_prior( answer, num=1):
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                 ],
                 # style={"margin-top":"-30rem","background-color":"transparent","text-align":"center"}
@@ -304,12 +337,14 @@ def question_group_answer_prior(label, value_list, value, key, answer):
             [
                 dbc.FormGroup(
                     [
-                        dbc.Label(label),
+                        dbc.Label(label,style={"padding-top":"10px","padding-bottom":"10px"}),
                         dbc.RadioItems(
                             options=options,
                             value = answer[key],
+                            style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                         ),
-                    ]
+                    ],
+                    style={"padding":"20px"}
                 )
             ]
         )
