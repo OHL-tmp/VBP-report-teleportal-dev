@@ -16,7 +16,7 @@ from utils import *
 from app import app
 
 
-app = dash.Dash(__name__, url_base_pathname='/login/')
+app = dash.Dash(__name__, url_base_pathname='/vbc-demo/tele-case-manager/patient/')
 
 server = app.server
 
@@ -113,4 +113,4 @@ def login_cjeck(n, un, pw):
         return False, ""
 
 if __name__ == "__main__":
-    app.run_server(host="127.0.0.1",debug=True,port=8052)
+    app.run_server(host="0.0.0.0",debug=True,port=8095)
