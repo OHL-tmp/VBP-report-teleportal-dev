@@ -20,8 +20,8 @@ from app import app
 def modal_self_recording_review(app):
     return html.Div(
         [
-        html.H6("Review", style={"font-size":"0.7rem"}),
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'video-modal-review-button-open'),
+        html.H6("Review", style={"font-size":"0.7rem","padding-top":"10px"}),
+        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-laptop-play-video-100.png"), style={"height":"1.5rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'video-modal-review-button-open'),
         dbc.Modal(
             [
             dbc.ModalHeader(id="video-modal-review-header"),

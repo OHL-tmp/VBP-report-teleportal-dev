@@ -78,22 +78,28 @@ q7=["7. If you had to spend the rest of your life with your heart failure the wa
 
 def modal_kccq_questionaire_answer(app):
     return html.Div(
-        [
-        html.H6("Review", style={"font-size":"0.7rem"}),
-        dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"2rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-answer-button-open'),
-        dbc.Modal(
-            [
-            dbc.ModalHeader(id = "kccq-modal-answer-header"),
-            dbc.ModalBody(modal_kccq_questionaire_body_answer()),
-            dbc.ModalFooter(
-                dbc.Button("Close", id="kccq-modal-answer-button-submit", className="mr-2"),
-                )],
-            id = "kccq-modal-answer",
-            size = 'xl',
-            backdrop = "static"
-            )],
-            style={"text-align":"center"}
-        )
+                [
+                    html.H6("Review", style={"font-size":"0.7rem","padding-top":"10px"}),
+                    dbc.Button(children = [html.Img(src=app.get_asset_url("icon-inspection-100.png"), style={"height":"1.5rem", "padding-top":"0px"})], color="light",style={"border-radius":"10rem"}, id = 'kccq-modal-answer-button-open'),
+                    dbc.Modal(
+                        [
+                            dbc.ModalHeader(id = "kccq-modal-answer-header"),
+                            dbc.ModalBody(
+                                modal_kccq_questionaire_body_answer(),
+                                style={"padding":"40px","margin-top":"-20px"}
+                            ),
+                            dbc.ModalFooter(
+                                dbc.Button("Close", id="kccq-modal-answer-button-submit", className="mr-2",style={"width":"160px"}),
+                                style={"padding-right":"42%"}
+                            )
+                        ],
+                        id = "kccq-modal-answer",
+                        size = 'xl',
+                        backdrop = "static"
+                    )
+                ],
+                style={"text-align":"center"}
+            )
 
 def modal_kccq_questionaire_body_answer():
 	
@@ -102,13 +108,16 @@ def modal_kccq_questionaire_body_answer():
                     
                     html.Div(
                         [
-                            html.H6("1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "1. Heart failure affects different people in different ways. Some feel shortness of breath while others feel fatigue. Please indicate how much you are limited by heart failure (shortness of breath or fatigue) in your ability to do the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col(width = 2),
+                                                dbc.Col(width = 3),
                                                 dbc.Col("Extremely Limited"),
                                                 dbc.Col("Quite a bit Limited"),
                                                 dbc.Col("Moderately Limited"),
@@ -116,13 +125,14 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col("Not at all Limited"),
                                                 dbc.Col("Limited for other reasons or did not do the activity"),
                                             ],
-                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center","font-family":"NotoSans-SemiBold"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("a. Showering/bathing", width = 2),
+                                                dbc.Col("a. Showering/bathing", width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -141,10 +151,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("b. Walking 1 block on level ground",width = 2),
+                                                dbc.Col("b. Walking 1 block on level ground",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -163,10 +174,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("c. Hurrying or jogging (as if to catch a bus)",width = 2),
+                                                dbc.Col("c. Hurrying or jogging (as if to catch a bus)",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -186,9 +198,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                     question_group_answer(q2[0], q2[1], q2[2], "kccq-modal-answer-radio-q2"),
                     question_group_answer(q3[0], q3[1], q3[2], "kccq-modal-answer-radio-q3"),
@@ -198,13 +212,16 @@ def modal_kccq_questionaire_body_answer():
                     question_group_answer(q7[0], q7[1], q7[2], "kccq-modal-answer-radio-q7"),
                     html.Div(
                         [
-                            html.H6("8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks."),
+                            html.Div(
+                                    "8. How much does your heart failure affect your lifestyle? Please indicate how your heart failure may have limited your participation in the following activities over the past 2 weeks.",
+                                    style={"padding-top":"10px","padding-bottom":"10px"}
+                                ),
                             html.Div(
                                 [
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col(width = 2),
+                                                dbc.Col(width = 3),
                                                 dbc.Col("Severely Limited"),
                                                 dbc.Col("Limited quite a bit"),
                                                 dbc.Col("Moderately Limited"),
@@ -212,13 +229,14 @@ def modal_kccq_questionaire_body_answer():
                                                 dbc.Col("Did not limit at all"),
                                                 dbc.Col("Does not apply or did not do for other reasons"),
                                             ],
-                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center","font-family":"NotoSans-SemiBold"} 
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("a. Hobbies, recreational activities", width = 2),
+                                                dbc.Col("a. Hobbies, recreational activities", width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -237,10 +255,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("b. Working or doing household chores",width = 2),
+                                                dbc.Col("b. Working or doing household chores",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -259,10 +278,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
+                                    html.Hr(),
                                     html.Div(
                                         dbc.Row(
                                             [
-                                                dbc.Col("c. Visiting family or friends out of your home",width = 2),
+                                                dbc.Col("c. Visiting family or friends out of your home",width = 3),
                                                 dbc.Col(
                                                     dbc.RadioItems(
                                                         options = [
@@ -282,9 +302,11 @@ def modal_kccq_questionaire_body_answer():
                                             ]
                                         )
                                     ),
-                                ]
+                                ],
+                                style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                             )
-                        ]
+                        ],
+                        style={"padding":"20px"}
                     ),
                 ],
                 # style={"margin-top":"-30rem","background-color":"transparent","text-align":"center"}
@@ -302,12 +324,14 @@ def question_group_answer(label, value_list, value, id):
             [
                 dbc.FormGroup(
                     [
-                        dbc.Label(label),
+                        dbc.Label(label,style={"padding-top":"10px","padding-bottom":"10px"}),
                         dbc.RadioItems(
                             options=options,
                             id=id,
+                            style={"font-size":"0.8rem","padding":"20px","border-radius":"0.5rem","background":"#f5f5f5"}
                         ),
-                    ]
+                    ],
+                    style={"padding":"20px"}
                 )
             ]
         )
