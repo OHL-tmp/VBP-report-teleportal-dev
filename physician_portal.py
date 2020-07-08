@@ -22,13 +22,11 @@ from patient_page import *
 
 
 
-
 app = dash.Dash(__name__, url_base_pathname='/physician/')
 server = app.server
 app.config['suppress_callback_exceptions'] = True
 
-
-username = "demo-patient"
+username = "demo-physician"
 password = "demo2020"
 
 def login_layout(app):
