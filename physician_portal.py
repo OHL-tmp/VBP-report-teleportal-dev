@@ -156,8 +156,8 @@ def header(app):
 							dbc.Col(
 								html.Div(
 									[
-										html.H1("Dr. Smith", style={"font-size":"1rem", "line-height":"0.6"}),
-										html.H6("NPI : CAR2398019880502", style={"font-size":"0.8rem"}),
+										html.H1("Dr. Richard Smith", style={"font-size":"1rem", "line-height":"0.6"}),
+										html.H6("NPI : 0000000001", style={"font-size":"0.8rem"}),
 									],
 									style={"padding-top":"0.5rem"}
 								), width="auto"),
@@ -174,8 +174,8 @@ def header(app):
 							dbc.Col(
 								html.Div(
 									[
-										html.H1("Orignization", style={"font-size":"0.8rem", "line-height":"0.6"}),
-										html.H6("XXX Physician Group", style={"font-size":"0.8rem"}),
+										html.H1("Organization", style={"font-size":"0.8rem", "line-height":"0.6"}),
+										html.H6("Demo Cardiology Physician Group", style={"font-size":"0.8rem"}),
 									],
 									style={"padding-top":"0.5rem"}
 								), width="auto"),
@@ -428,7 +428,9 @@ def toggle_navbar_collapse(n, is_open):
 	]
 	)
 def refresh_patient_info(v):
-	infos = [["Kevin Scott","3/1/1952",68,"M",2,2,"8/15/2020",3, 0],["Rhianna Kenny","9/19/1994",25,"F",0,0,"8/15/2020",1, 1],["Mary Kim","5/12/1988",32,"F",0,0,"8/15/2020",2, 2],]
+	rd = datetime.datetime.now().date() + datetime.timedelta(days = 7)
+	rd = str(datetime.datetime.strftime(rd, '%m/%d/%Y'))
+	infos = [["Kevin Scott","3/1/1952",68,"M",2,2,rd,3, 0],["Rhianna Kenny","9/19/1964",55,"F",0,0,"--",1, 1],["Mary Kim","5/12/1968",52,"F",0,0,"--",2, 2],]
 
 	
 
@@ -561,74 +563,80 @@ def update_active(data):
 
 
 @app.callback(
-    [Output(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)]
-    +[Output("berg-scale-question-next", "disabled")],
-    [Input(f'berg-scale-question-{i+1}', "n_clicks") for i in range(14)]
-    +[Input("berg-scale-question-next", "n_clicks"),],
-    [State(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)
-    ],
-    )
-def switch_questions(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, next,qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14):
-    disable=False
-    ctx = dash.callback_context
-    if ctx.triggered[0]['prop_id'].split('.')[0] == 'berg-scale-question-next':
-
-        qc=[qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14]
-        selected_index=[j for j, e in enumerate(qc) if e == False]
-        num=selected_index[0]
-        if num==12:
-            disable=True
-            qc[12]=True
-            qc[13]=False
-        elif num==13:
-            disable=True
-            qc[13]=False
-        else: 
-            disable=False
-            qc[num]=True
-            qc[num+1]=False
-
-    else:
-        qc=[True]*14
-        triggered_button=ctx.triggered[0]['prop_id'].split('.')[0]
-        if triggered_button=='':
-            qc[0]=False
-        else:
-            num=int(triggered_button[20:])            
-            qc[num-1]=False
-            if num==14:
-                disable=True
-            else:
-                disable=False
-
-    
-    return qc[0], qc[1], qc[2],qc[3],qc[4],qc[5],qc[6],qc[7],qc[8],qc[9],qc[10], qc[11], qc[12],qc[13],disable
-
-@app.callback(
-    [Output("berg-scale-score", "children"),
-    Output({"type": "physician-assessment-collapse-score", 'index':'0-0'},"children")],
-    [Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
-    )
-def cal_score(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14):
-    pl = list(filter(None, [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14]))
-    if len(pl)==0:
-        score=0
-    else:
-        score=sum(pl)
-    return 'Total Score: '+str(score)+'/56', str(score)
-
-@app.callback(
-	[Output(f'berg-scale-question-{i+1}', "color") for i in range(14)],
-	[Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
+	[Output({'type':'container-berg-scale-question-content','index':f'{i+1}'}, "hidden") for i in range(14)]
+	+[Output("berg-scale-question-next", "disabled")],
+	[Input({'type':'berg-scale-question','index':ALL}, "n_clicks")]
+	+[Input("berg-scale-question-next", "n_clicks"),],
+	[State({'type':'container-berg-scale-question-content','index':ALL}, "hidden")
+	],
 	)
-def update_style(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14):
-	v = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14]
-	color = ['light'] * 14
-	for i in range(len(v)):
-		if v[i] is not None:
-			color[i] = 'primary'
-	return color[0],color[1],color[2],color[3],color[4],color[5],color[6],color[7],color[8],color[9],color[10],color[11],color[12],color[13]		
+#def switch_questions(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, next,qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14):
+def switch_questions(q, next,qc):
 
+	disable=False
+	ctx = dash.callback_context
+
+	if ctx.triggered[0]['prop_id'].split('.')[0] == 'berg-scale-question-next':
+
+#        qc=[qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14]
+		selected_index=[j for j, e in enumerate(qc) if e == False]
+		num=selected_index[0]
+		if num==12:
+			disable=True
+			qc[12]=True
+			qc[13]=False
+		elif num==13:
+			disable=True
+			qc[13]=False
+		else: 
+			disable=False
+			qc[num]=True
+			qc[num+1]=False
+
+	else:
+		qc=[True]*14
+		triggered_button=ctx.triggered[0]['prop_id'].split('.')[0]
+		if triggered_button=='':
+			qc[0]=False
+		else:
+			num=int(triggered_button[10:12].replace('"',''))            
+			qc[num-1]=False
+			if num==14:
+				disable=True
+			else:
+				disable=False
+
+	
+	return qc[0], qc[1], qc[2],qc[3],qc[4],qc[5],qc[6],qc[7],qc[8],qc[9],qc[10], qc[11], qc[12],qc[13],disable
+
+@app.callback(
+	[Output("berg-scale-score", "children"),
+	Output({"type": "physician-assessment-collapse-score", 'index':'0-0'},"children")],
+	[Input({'type':'berg-scale-question-content','index':ALL}, "value")]
+	)
+def cal_score(q):
+	pl = list(filter(None, q))
+	if len(pl)==0:
+		score=0
+	else:
+		score=sum(pl)
+	return 'Total Score: '+str(score)+'/56', str(score)
+
+@app.callback(
+	[Output({'type':'berg-scale-question','index':MATCH}, "color")],
+	[Input({'type':'berg-scale-question-content','index':MATCH}, "value")]
+	)
+def update_style(v):
+	# v = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14]
+	# color = ['light'] * 14
+	# for i in range(len(v)):
+	# 	if v[i] is not None:
+	# 		color[i] = 'primary'
+	# return color[0],color[1],color[2],color[3],color[4],color[5],color[6],color[7],color[8],color[9],color[10],color[11],color[12],color[13]		
+	if v is not None:
+		return ['primary']
+	else:
+		return ['light']
 
 if __name__ == "__main__":
 	app.run_server(host="127.0.0.1",debug=True,port=8052)
