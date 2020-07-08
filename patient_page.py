@@ -20,6 +20,7 @@ from statistics import mean
 from utils import *
 from app import app
 from kccq_questionnaire_answer_prior import *
+from berg_balance_tests import *
 from figure import *
 
 def patient_data(data, pid):
@@ -247,11 +248,14 @@ def patient_collapse_item(assessment_type, Completion_date, result, pid, itemid)
             duration = int(FrameNumber/rate)
 
         size = round(os.path.getsize(file)/(1024*1024),1)
-        all_score = 50
+        
         if result == "Start Review":
-            score_div = [html.Div(all_score, style = {'display':'none'}, id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})]
+            score_div = [
+                modal_berg_scale_body(),
+                html.Div(style = {'display':'none'}, id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})]
         else:
             score_div = [html.Div(id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})]
+        
         return html.Div([
             dbc.Row([
                 dbc.Col(review_video),
@@ -262,7 +266,6 @@ def patient_collapse_item(assessment_type, Completion_date, result, pid, itemid)
                     ])
                 ]),
             dbc.Row(["Physician Assessment:"]),
-            dbc.Row("Total Score: " + str(all_score) + "/56"),
             html.Div(score_div),
             dbc.Button("Finish", id= {"type": "physician-assessment-collapse-close", 'index': str(pid)+'-'+str(itemid)})
             ])
