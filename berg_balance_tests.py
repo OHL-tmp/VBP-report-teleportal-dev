@@ -138,7 +138,7 @@ form={
 }
 
 def berg_scale_button_template(label):
-    return html.Div([dbc.Button( label, color="light",style={"border-radius":"10rem"}, id = 'berg-scale-question-'+label)])
+    return html.Div([dbc.Button( label, color="light",style={"border-radius":"10rem"}, id = {'type':'berg-scale-question','index':label})])
 
 def physician_assess_group(label, value_list, value, id):
     value_list_len = len(value_list)
@@ -154,14 +154,14 @@ def physician_assess_group(label, value_list, value, id):
                         dbc.Label(label),
                         dbc.RadioItems(
                             options=options,
-                            id=id,
+                            id = {'type':'berg-scale-question-content','index':id},
                             labelStyle={'display': 'block'},
                             style = {"textAlign" : "start"} ,
                         ),
                     ]
                 )
             ],
-            id='container-'+id,
+            id={'type':'container-berg-scale-question-content','index':id},
             hidden=True,
         )
 
@@ -195,27 +195,27 @@ def modal_berg_scale_body():
                     ],
                     style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
                 ),
-                dbc.Row(
+                dcc.Loading(dbc.Row(
                     [
 #                        dbc.Row(width = 2),
-                        physician_assess_group(form['1'][0], form['1'][1], form['1'][2], 'berg-scale-question-content-1'),
-                        physician_assess_group(form['2'][0], form['2'][1], form['2'][2], 'berg-scale-question-content-2'),
-                        physician_assess_group(form['3'][0], form['3'][1], form['3'][2], 'berg-scale-question-content-3'),
-                        physician_assess_group(form['4'][0], form['4'][1], form['4'][2], 'berg-scale-question-content-4'),
-                        physician_assess_group(form['5'][0], form['5'][1], form['5'][2], 'berg-scale-question-content-5'),
-                        physician_assess_group(form['6'][0], form['6'][1], form['6'][2], 'berg-scale-question-content-6'),
-                        physician_assess_group(form['7'][0], form['7'][1], form['7'][2], 'berg-scale-question-content-7'),
-                        physician_assess_group(form['8'][0], form['8'][1], form['8'][2], 'berg-scale-question-content-8'),
-                        physician_assess_group(form['9'][0], form['9'][1], form['9'][2], 'berg-scale-question-content-9'),
-                        physician_assess_group(form['10'][0], form['10'][1], form['10'][2], 'berg-scale-question-content-10'),
-                        physician_assess_group(form['11'][0], form['11'][1], form['11'][2], 'berg-scale-question-content-11'),
-                        physician_assess_group(form['12'][0], form['12'][1], form['12'][2], 'berg-scale-question-content-12'),
-                        physician_assess_group(form['13'][0], form['13'][1], form['13'][2], 'berg-scale-question-content-13'),
-                        physician_assess_group(form['14'][0], form['14'][1], form['14'][2], 'berg-scale-question-content-14'),
+                        physician_assess_group(form['1'][0], form['1'][1], form['1'][2], '1'),
+                        physician_assess_group(form['2'][0], form['2'][1], form['2'][2], '2'),
+                        physician_assess_group(form['3'][0], form['3'][1], form['3'][2], '3'),
+                        physician_assess_group(form['4'][0], form['4'][1], form['4'][2], '4'),
+                        physician_assess_group(form['5'][0], form['5'][1], form['5'][2], '5'),
+                        physician_assess_group(form['6'][0], form['6'][1], form['6'][2], '6'),
+                        physician_assess_group(form['7'][0], form['7'][1], form['7'][2], '7'),
+                        physician_assess_group(form['8'][0], form['8'][1], form['8'][2], '8'),
+                        physician_assess_group(form['9'][0], form['9'][1], form['9'][2], '9'),
+                        physician_assess_group(form['10'][0], form['10'][1], form['10'][2], '10'),
+                        physician_assess_group(form['11'][0], form['11'][1], form['11'][2], '11'),
+                        physician_assess_group(form['12'][0], form['12'][1], form['12'][2], '12'),
+                        physician_assess_group(form['13'][0], form['13'][1], form['13'][2], '13'),
+                        physician_assess_group(form['14'][0], form['14'][1], form['14'][2], '14'),
 
                     ],
                     style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
-                ),
+                )),
                 dbc.Row(
                     [
 #                        dbc.Row(width = 2),

@@ -142,7 +142,7 @@ def patient_item(app, name, dob, age, gender, current_assessment, assessments_2b
                                                 value = 0,
                                                 bs_size = 'sm',
                                                 )]),
-                                            dcc.Loading(html.Div([],id = {'type':'physician-modal-patient-modalbody', 'index':pid})),    
+                                            html.Div([],id = {'type':'physician-modal-patient-modalbody', 'index':pid}),    
                                             ],
                                             style={"padding-left":"20px","margin-top":"60px"}
                                         ),
@@ -213,7 +213,7 @@ def physician_assessment_item(category,assessment,assessment_type,Completion_dat
                             html.Div(
                                 [  
 
-                                    dbc.Button(result, id = {"type": "physician-assessment-open-item", 'index': str(pid)+'-'+str(itemid)}),
+                                    dcc.Loading(dbc.Button(result, id = {"type": "physician-assessment-open-item", 'index': str(pid)+'-'+str(itemid)})),
                                 ],
                                 style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
                             ),
