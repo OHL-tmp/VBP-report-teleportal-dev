@@ -12,7 +12,7 @@ import numpy as np
 
 from dash.dependencies import Input, Output, State, MATCH, ALL
 
-from utils import *
+# from utils import *
 from app import app
 
 from kccq_questionnaire import *

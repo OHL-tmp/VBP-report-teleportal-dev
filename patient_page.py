@@ -212,10 +212,11 @@ def physician_assessment_item(category,assessment,assessment_type,Completion_dat
                             ),
                             html.Div(
                                 [  
-
-                                    dcc.Loading(dbc.Button(result, id = {"type": "physician-assessment-open-item", 'index': str(pid)+'-'+str(itemid)})),
+                                    dcc.Loading(
+                                        dbc.Button(result, id = {"type": "physician-assessment-open-item", 'index': str(pid)+'-'+str(itemid)}, style={"border-radius":"10rem"}, color="light")
+                                    ),
                                 ],
-                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem"}
+                                style={"border-left":"1px solid #d0d0d0","padding-left":"1rem","padding-right":"1rem","width":"6rem"}
                             ),
                         ],
                         style={"display":"flex","padding-top":"1rem","padding-bottom":"1rem","justify-content":"space-around"}
@@ -238,9 +239,11 @@ def patient_collapse_item(assessment_type, Completion_date, result, pid, itemid)
         path = str('configure/') + patient_name +str('/upload/') + submit_date + str('_')
         file = glob.glob(path +'*.*')[0].replace('\\','/')
         encoded_video = base64.b64encode(open(file, 'rb').read())
-        review_video = html.Div([
-                html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"20rem","border-bottom":"none", "text-align":"center"} ),
-                ])
+        review_video = html.Div(
+                            [
+                                html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"16rem","border-bottom":"none", "text-align":"center"} ),
+                            ]
+                        )
         cap = cv2.VideoCapture(file)
         if cap.isOpened(): 
             rate = cap.get(5)   
@@ -250,25 +253,52 @@ def patient_collapse_item(assessment_type, Completion_date, result, pid, itemid)
         size = round(os.path.getsize(file)/(1024*1024),1)
         
         if result == "Start Review":
-            score_div = [
-                modal_berg_scale_body(),
-                html.Div(style = {'display':'none'}, id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})]
+            score_div = html.Div(
+                            [
+                                html.H2("Physician Assessment", style={"font-size":"0.8rem"}),
+                                modal_berg_scale_body(),
+                                html.Div(style = {'display':'none'}, id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})
+                            ]
+                        )
         else:
             score_div = [html.Div(id= {"type": "physician-assessment-collapse-score", 'index': str(pid)+'-'+str(itemid)})]
         
-        return html.Div([
-            dbc.Row([
-                dbc.Col(review_video),
-                dbc.Col([
-                    dbc.Row("Video Uploaded on:  " + Completion_date),
-                    dbc.Row("Video Length:  " + str(duration) + 's'),
-                    dbc.Row("Video Size:  " + str(size) + 'MB')
-                    ])
-                ]),
-            dbc.Row(["Physician Assessment:"]),
-            html.Div(score_div),
-            dbc.Button("Finish", id= {"type": "physician-assessment-collapse-close", 'index': str(pid)+'-'+str(itemid)})
-            ])
+        return html.Div(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(review_video),
+                                dbc.Col(
+                                    [
+                                        dbc.Row("Video Uploaded on:  " + Completion_date),
+                                        dbc.Row("Video Length:  " + str(duration) + 's'),
+                                        dbc.Row("Video Size:  " + str(size) + 'MB')
+                                    ],
+                                    style={"font-size":"0.8rem"}
+                                )
+                            ],
+                            style={"padding":"16px"}
+                        ),
+                        html.Hr(),
+                        dbc.Row(
+                            [
+                                html.Div(
+                                    [
+                                        
+                                        html.Div(score_div),
+                                    ]
+                                )
+                            ]
+                        ),
+                        
+                        html.Div(
+                            dbc.Button("Finish", id= {"type": "physician-assessment-collapse-close", 'index': str(pid)+'-'+str(itemid)}),
+                            style={"text-align":"end","padding":"1rem"}
+                        ),
+                        
+                    ],
+                    style={"padding-left":"2rem"}
+                )
     else:
         file = str('configure/') + patient_name +str('/kccq_questionarie_' + submit_date + '.json')
         answer = json.load(open(file), encoding = 'utf-8')

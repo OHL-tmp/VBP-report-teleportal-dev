@@ -138,7 +138,14 @@ form={
 }
 
 def berg_scale_button_template(label):
-    return html.Div([dbc.Button( label, color="light",style={"border-radius":"10rem"}, id = {'type':'berg-scale-question','index':label})])
+    return html.Div(
+                [
+                    html.Div(
+                        dbc.Button( label, color="light",style={"border-radius":"10rem","width":"8rem"}, id = {'type':'berg-scale-question','index':label})
+                    )
+                ],
+                style={"padding-bottom":"0.5rem"}   
+            )
 
 def physician_assess_group(label, value_list, value, id):
     value_list_len = len(value_list)
@@ -168,69 +175,92 @@ def physician_assess_group(label, value_list, value, id):
 def modal_berg_scale_body():
 	
 	return html.Div(
-        [
-                dbc.Row(
-                    [
-#                        dbc.Col(width = 2),
-                        dbc.Col(berg_scale_button_template('1')),
-                        dbc.Col(berg_scale_button_template('2')),
-                        dbc.Col(berg_scale_button_template('3')),
-                        dbc.Col(berg_scale_button_template('4')),
-                        dbc.Col(berg_scale_button_template('5')),
-                        dbc.Col(berg_scale_button_template('6')),
-                        dbc.Col(berg_scale_button_template('7')),
-                    ],
-                    style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+            [
+#                 dbc.Row(
+#                     [
+# #                        dbc.Col(width = 2),
+#                         dbc.Col(berg_scale_button_template('1')),
+#                         dbc.Col(berg_scale_button_template('2')),
+#                         dbc.Col(berg_scale_button_template('3')),
+#                         dbc.Col(berg_scale_button_template('4')),
+#                         dbc.Col(berg_scale_button_template('5')),
+#                         dbc.Col(berg_scale_button_template('6')),
+#                         dbc.Col(berg_scale_button_template('7')),
+#                     ],
+#                     style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+#                 ),
+#                 dbc.Row(
+#                     [
+# #                        dbc.Col(width = 2),
+#                         dbc.Col(berg_scale_button_template('8')),
+#                         dbc.Col(berg_scale_button_template('9')),
+#                         dbc.Col(berg_scale_button_template('10')),
+#                         dbc.Col(berg_scale_button_template('11')),
+#                         dbc.Col(berg_scale_button_template('12')),
+#                         dbc.Col(berg_scale_button_template('13')),
+#                         dbc.Col(berg_scale_button_template('14')),
+#                     ],
+#                     style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+#                 ),
+                html.Div(
+                    html.Div(
+                        [
+                            berg_scale_button_template(str(i+1)) for i in range(14)
+                        ],
+                        style={"padding":"1rem"}
+                    ),
+                    style={"border-radius":"1rem", "background":"#f5f5f5", "padding":"0.5rem","width":"11rem","height":"20rem","overflow-y":"scroll"}
                 ),
-                dbc.Row(
+                html.Div(
                     [
-#                        dbc.Col(width = 2),
-                        dbc.Col(berg_scale_button_template('8')),
-                        dbc.Col(berg_scale_button_template('9')),
-                        dbc.Col(berg_scale_button_template('10')),
-                        dbc.Col(berg_scale_button_template('11')),
-                        dbc.Col(berg_scale_button_template('12')),
-                        dbc.Col(berg_scale_button_template('13')),
-                        dbc.Col(berg_scale_button_template('14')),
-                    ],
-                    style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
-                ),
-                dcc.Loading(dbc.Row(
-                    [
-#                        dbc.Row(width = 2),
-                        physician_assess_group(form['1'][0], form['1'][1], form['1'][2], '1'),
-                        physician_assess_group(form['2'][0], form['2'][1], form['2'][2], '2'),
-                        physician_assess_group(form['3'][0], form['3'][1], form['3'][2], '3'),
-                        physician_assess_group(form['4'][0], form['4'][1], form['4'][2], '4'),
-                        physician_assess_group(form['5'][0], form['5'][1], form['5'][2], '5'),
-                        physician_assess_group(form['6'][0], form['6'][1], form['6'][2], '6'),
-                        physician_assess_group(form['7'][0], form['7'][1], form['7'][2], '7'),
-                        physician_assess_group(form['8'][0], form['8'][1], form['8'][2], '8'),
-                        physician_assess_group(form['9'][0], form['9'][1], form['9'][2], '9'),
-                        physician_assess_group(form['10'][0], form['10'][1], form['10'][2], '10'),
-                        physician_assess_group(form['11'][0], form['11'][1], form['11'][2], '11'),
-                        physician_assess_group(form['12'][0], form['12'][1], form['12'][2], '12'),
-                        physician_assess_group(form['13'][0], form['13'][1], form['13'][2], '13'),
-                        physician_assess_group(form['14'][0], form['14'][1], form['14'][2], '14'),
+                        dbc.Row(
+                            [
+        #                        dbc.Row(width = 2),
+                                dbc.Col(html.Div( id = 'berg-scale-score')),
+                            ],
+                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center","padding-bottom":"2rem"} 
+                        ),
+                        dcc.Loading(
+                            dbc.Row(
+                                [
+            #                        dbc.Row(width = 2),
+                                    physician_assess_group(form['1'][0], form['1'][1], form['1'][2], '1'),
+                                    physician_assess_group(form['2'][0], form['2'][1], form['2'][2], '2'),
+                                    physician_assess_group(form['3'][0], form['3'][1], form['3'][2], '3'),
+                                    physician_assess_group(form['4'][0], form['4'][1], form['4'][2], '4'),
+                                    physician_assess_group(form['5'][0], form['5'][1], form['5'][2], '5'),
+                                    physician_assess_group(form['6'][0], form['6'][1], form['6'][2], '6'),
+                                    physician_assess_group(form['7'][0], form['7'][1], form['7'][2], '7'),
+                                    physician_assess_group(form['8'][0], form['8'][1], form['8'][2], '8'),
+                                    physician_assess_group(form['9'][0], form['9'][1], form['9'][2], '9'),
+                                    physician_assess_group(form['10'][0], form['10'][1], form['10'][2], '10'),
+                                    physician_assess_group(form['11'][0], form['11'][1], form['11'][2], '11'),
+                                    physician_assess_group(form['12'][0], form['12'][1], form['12'][2], '12'),
+                                    physician_assess_group(form['13'][0], form['13'][1], form['13'][2], '13'),
+                                    physician_assess_group(form['14'][0], form['14'][1], form['14'][2], '14'),
 
+                                ],
+                                style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                            )
+                        ),
+                        dbc.Row(
+                            [
+        #                        dbc.Row(width = 2),
+                                dbc.Col(
+                                    html.Div(
+                                        [
+                                            dbc.Button('Next', color="dark",style={"border-radius":"10rem"}, id = 'berg-scale-question-next')
+                                        ]
+                                    )
+                                ),
+                            ],
+                            style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"}
+                        ),
                     ],
-                    style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
-                )),
-                dbc.Row(
-                    [
-#                        dbc.Row(width = 2),
-                        dbc.Col(html.Div([dbc.Button( 'Next', color="light",style={"border-radius":"10rem"}, id = 'berg-scale-question-next')])),
-                    ],
-                    style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
+                    style={"width":"30rem","padding-left":"4rem"}
                 ),
-                dbc.Row(
-                    [
-#                        dbc.Row(width = 2),
-                        dbc.Col(html.Div( id = 'berg-scale-score')),
-                    ],
-                    style = {"display" : "flex", "justify-content" : "space-around", "text-align" : "center"} 
-                ),
-        ]
+        ],
+        style={"display":"flex"}
     )
 
 
