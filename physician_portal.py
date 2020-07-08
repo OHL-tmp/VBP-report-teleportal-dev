@@ -629,5 +629,5 @@ def update_style(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14):
 
 
 if __name__ == "__main__":
-	app.run_server(host="127.0.0.1",debug=True,port=8052)
+	app.run_server(host="0.0.0.0",port=8094)
 

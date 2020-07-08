@@ -13,6 +13,8 @@ server = app.server
 
 app.config.suppress_callback_exceptions = True
 
+app.title = 'Physician Portal'
+
 
 # auth = dash_auth.BasicAuth(
 #     app,
