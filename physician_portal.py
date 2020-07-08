@@ -21,10 +21,15 @@ from kccq_questionnaire_answer import *
 from patient_page import *
 
 
+
+
+app = dash.Dash(__name__, url_base_pathname='/physician/')
+server = app.server
+app.config['suppress_callback_exceptions'] = True
+
+
 username = "demo-patient"
 password = "demo2020"
-# app = dash.Dash(__name__, url_base_pathname='/physician/')
-# server = app.server
 
 def login_layout(app):
 	return html.Div(
@@ -555,11 +560,76 @@ def update_active(data):
 	return str(active)
 
 
+@app.callback(
+    [Output(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)]
+    +[Output("berg-scale-question-next", "disabled")],
+    [Input(f'berg-scale-question-{i+1}', "n_clicks") for i in range(14)]
+    +[Input("berg-scale-question-next", "n_clicks"),],
+    [State(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)
+    ],
+    )
+def switch_questions(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, next,qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14):
+    disable=False
+    ctx = dash.callback_context
+    if ctx.triggered[0]['prop_id'].split('.')[0] == 'berg-scale-question-next':
+
+        qc=[qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14]
+        selected_index=[j for j, e in enumerate(qc) if e == False]
+        num=selected_index[0]
+        if num==12:
+            disable=True
+            qc[12]=True
+            qc[13]=False
+        elif num==13:
+            disable=True
+            qc[13]=False
+        else: 
+            disable=False
+            qc[num]=True
+            qc[num+1]=False
+
+    else:
+        qc=[True]*14
+        triggered_button=ctx.triggered[0]['prop_id'].split('.')[0]
+        if triggered_button=='':
+            qc[0]=False
+        else:
+            num=int(triggered_button[20:])            
+            qc[num-1]=False
+            if num==14:
+                disable=True
+            else:
+                disable=False
+
+    
+    return qc[0], qc[1], qc[2],qc[3],qc[4],qc[5],qc[6],qc[7],qc[8],qc[9],qc[10], qc[11], qc[12],qc[13],disable
+
+@app.callback(
+    [Output("berg-scale-score", "children"),
+    Output({"type": "physician-assessment-collapse-score", 'index':'0-0'},"children")],
+    [Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
+    )
+def cal_score(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14):
+    pl = list(filter(None, [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14]))
+    if len(pl)==0:
+        score=0
+    else:
+        score=sum(pl)
+    return 'Total Score: '+str(score)+'/56', str(score)
+
+@app.callback(
+	[Output(f'berg-scale-question-{i+1}', "color") for i in range(14)],
+	[Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
+	)
+def update_style(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14):
+	v = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14]
+	color = ['light'] * 14
+	for i in range(len(v)):
+		if v[i] is not None:
+			color[i] = 'primary'
+	return color[0],color[1],color[2],color[3],color[4],color[5],color[6],color[7],color[8],color[9],color[10],color[11],color[12],color[13]		
+
 
 if __name__ == "__main__":
 	app.run_server(host="127.0.0.1",debug=True,port=8052)
 
-
-
-
-patient_assessment_detail = [ ["Functional Assessment","Berg Balance Scale","Self Recording",str(datetime.datetime.now().date().strftime('%m/%d/%Y')),"Start Review", 0, 0],["Functional Assessment","Berg Balance Scale","Self Recording","04/01/2020","50", 0, 1],["Functional Assessment","Berg Balance Scale","Self Recording","01/01/2020","45", 0, 2],["Patient Health Status","KCCQ-12","Questionnaire",str(datetime.datetime.now().date().strftime('%m/%d/%Y')),"Start Review", 0, 3],["Patient Health Status","KCCQ-12","Questionnaire","04/15/2020","75", 0, 4],["Patient Health Status","KCCQ-12","Questionnaire","01/15/2020","69", 0, 5] ]

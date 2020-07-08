@@ -18,9 +18,9 @@ from app import app
 
 
 
-app = dash.Dash(__name__, url_base_pathname="/patient/")
+#app = dash.Dash(__name__, url_base_pathname="/patient/")
 
-server = app.server
+#server = app.server
 
 
 

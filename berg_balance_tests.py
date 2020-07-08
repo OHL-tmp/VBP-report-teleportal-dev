@@ -17,29 +17,13 @@ from utils import *
 from app import app
 
 
-app = dash.Dash(__name__, url_base_pathname="/patient/")
+#app = dash.Dash(__name__, url_base_pathname="/patient/")
 
-server = app.server
+#server = app.server
 
 
 form={
-'1':['1. SITTING TO STANDING',
-['able to stand without using hands and stabilize independently',
-'able to stand independently using hands',
-'able to stand using hands after several tries',
-'needs minimal aid to stand or to stabilize',
-'needs moderate or maximal assist to stand',
-],
-[4,3,2,1,0],],
-'2':['2. STANDING UNSUPPORTED',
-['able to stand safely 2 minutes',
-'able to stand 2 minutes with supervision',
-'able to stand 30 seconds unsupported',
-'needs several tries to stand 30 seconds unsupported',
-'unable to stand 30 seconds unassisted',
-],
-[4,3,2,1,0],],
-'3':['3. SITTING WITH BACK UNSUPPORTED BUT FEET SUPPORTED ON FLOOR OR ON A STOOL',
+'1':['1. SITTING WITH BACK UNSUPPORTED BUT FEET SUPPORTED ON FLOOR OR ON A STOOL',
 ['able to sit safely and securely 2 minutes',
 'able to sit 2 minutes under supervision',
 'able to sit 30 seconds',
@@ -47,12 +31,28 @@ form={
 'unable to sit without support 10 seconds',
 ],
 [4,3,2,1,0],],
-'4':['4. STANDING TO SITTING',
+'2':['2. STANDING TO SITTING',
 ['sits safely with minimal use of hands',
 'controls descent by using hands',
 'uses back of legs against chair to control descent', 
 'sits independently but has uncontrolled descent',
 'needs assistance to sit',
+],
+[4,3,2,1,0],],
+'3':['3. SITTING TO STANDING',
+['able to stand without using hands and stabilize independently',
+'able to stand independently using hands',
+'able to stand using hands after several tries',
+'needs minimal aid to stand or to stabilize',
+'needs moderate or maximal assist to stand',
+],
+[4,3,2,1,0],],
+'4':['4. STANDING UNSUPPORTED',
+['able to stand safely 2 minutes',
+'able to stand 2 minutes with supervision',
+'able to stand 30 seconds unsupported',
+'needs several tries to stand 30 seconds unsupported',
+'unable to stand 30 seconds unassisted',
 ],
 [4,3,2,1,0],],
 '5':['5. TRANSFERS',
@@ -234,63 +234,64 @@ def modal_berg_scale_body():
     )
 
 
-app.layout = modal_berg_scale_body()
+#app.layout = modal_berg_scale_body()
 
-@app.callback(
-    [Output(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)]
-    +[Output("berg-scale-question-next", "disabled")],
-    [Input(f'berg-scale-question-{i+1}', "n_clicks") for i in range(14)]
-    +[Input("berg-scale-question-next", "n_clicks"),],
-    [State(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)
-    ],
-    )
-def switch_questions(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, next,qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14):
-    disable=False
-    ctx = dash.callback_context
-    if ctx.triggered[0]['prop_id'].split('.')[0] == 'berg-scale-question-next':
+# @app.callback(
+#     [Output(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)]
+#     +[Output("berg-scale-question-next", "disabled")],
+#     [Input(f'berg-scale-question-{i+1}', "n_clicks") for i in range(14)]
+#     +[Input("berg-scale-question-next", "n_clicks"),],
+#     [State(f'container-berg-scale-question-content-{i+1}', "hidden") for i in range(14)
+#     ],
+#     )
+# def switch_questions(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14, next,qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14):
+#     disable=False
+#     ctx = dash.callback_context
+#     if ctx.triggered[0]['prop_id'].split('.')[0] == 'berg-scale-question-next':
 
-        qc=[qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14]
-        selected_index=[j for j, e in enumerate(qc) if e == False]
-        num=selected_index[0]
-        if num==12:
-            disable=True
-            qc[12]=True
-            qc[13]=False
-        elif num==13:
-            disable=True
-            qc[13]=False
-        else: 
-            disable=False
-            qc[num]=True
-            qc[num+1]=False
+#         qc=[qc1,qc2,qc3,qc4,qc5,qc6,qc7,qc8,qc9,qc10,qc11,qc12,qc13,qc14]
+#         selected_index=[j for j, e in enumerate(qc) if e == False]
+#         num=selected_index[0]
+#         if num==12:
+#             disable=True
+#             qc[12]=True
+#             qc[13]=False
+#         elif num==13:
+#             disable=True
+#             qc[13]=False
+#         else: 
+#             disable=False
+#             qc[num]=True
+#             qc[num+1]=False
 
-    else:
-        qc=[True]*14
-        triggered_button=ctx.triggered[0]['prop_id'].split('.')[0]
-        if triggered_button=='':
-            qc[0]=False
-        else:
-            num=int(triggered_button[20:])            
-            qc[num-1]=False
-            if num==14:
-                disable=True
-            else:
-                disable=False
+#     else:
+#         qc=[True]*14
+#         triggered_button=ctx.triggered[0]['prop_id'].split('.')[0]
+#         if triggered_button=='':
+#             qc[0]=False
+#         else:
+#             num=int(triggered_button[20:])            
+#             qc[num-1]=False
+#             if num==14:
+#                 disable=True
+#             else:
+#                 disable=False
 
     
-    return qc[0], qc[1], qc[2],qc[3],qc[4],qc[5],qc[6],qc[7],qc[8],qc[9],qc[10], qc[11], qc[12],qc[13],disable
+#     return qc[0], qc[1], qc[2],qc[3],qc[4],qc[5],qc[6],qc[7],qc[8],qc[9],qc[10], qc[11], qc[12],qc[13],disable
 
-@app.callback(
-    Output("berg-scale-score", "children"),
-    [Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
-    )
-def cal_score(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14):
-    pl = list(filter(None, [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14]))
-    if len(pl)==0:
-        score=0
-    else:
-        score=sum(pl)
-    return 'Total Score: '+str(score)+'/56'
+# @app.callback(
+#     [Output("berg-scale-score", "children"),
+#     Output({"type": "physician-assessment-collapse-score", 'index':'0-0'},"children")],
+#     [Input(f'berg-scale-question-content-{i+1}', "value") for i in range(14)]
+#     )
+# def cal_score(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14):
+#     pl = list(filter(None, [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14]))
+#     if len(pl)==0:
+#         score=0
+#     else:
+#         score=sum(pl)
+#     return 'Total Score: '+str(score)+'/56', str(score)
 
 
 
