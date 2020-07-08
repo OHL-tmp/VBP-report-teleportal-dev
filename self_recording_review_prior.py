@@ -56,15 +56,15 @@ def modal_self_recording_review_prior(app, filename, score, num):
 														html.H6("Size : "+ str(size)+' MB'),
 													]
 												),
-												dbc.Col(
-													html.Div(
-														[
-															dbc.Badge("Total Score: ", color="warning", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"0.8rem"}),
-															html.H1(score + "/56", style={"font-size":"2rem","color":"#ffc107"}),
-														]
-													)
+												# dbc.Col(
+												# 	html.Div(
+												# 		[
+												# 			dbc.Badge("Total Score: ", color="warning", className="mr-1",style={"font-family":"NotoSans-SemiBold","font-size":"0.8rem"}),
+												# 			html.H1(score + "/56", style={"font-size":"2rem","color":"#ffc107"}),
+												# 		]
+												# 	)
 													
-												),
+												# ),
 											],
 											style={"width":"1600px"}
 										)
@@ -75,7 +75,7 @@ def modal_self_recording_review_prior(app, filename, score, num):
 							dbc.ModalBody(
 								html.Div(
 									[
-										html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"25rem","border-bottom":"none", "text-align":"center"} ),
+										html.Video(src='data:image/png;base64,{}'.format(encoded_video.decode()), controls = True, style={"height":"35rem","border-bottom":"none", "text-align":"center"} ),
 									],
 									style={"text-align":"center"}
 								)
